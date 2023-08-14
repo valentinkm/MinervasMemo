@@ -1,0 +1,20 @@
+name: minerva
+channels:
+  - defaults
+dependencies:
+  - bzip2=1.0.8=h620ffc9_4
+  - ca-certificates=2023.05.30=hca03da5_0
+  - libffi=3.4.4=hca03da5_0
+  - ncurses=6.4=h313beb8_0
+  - openssl=3.0.10=h1a28f6b_0
+  - pip=23.2.1=py311hca03da5_0
+  - python=3.11.4=hb885b13_0
+  - readline=8.2=h1a28f6b_0
+  - setuptools=68.0.0=py311hca03da5_0
+  - sqlite=3.41.2=h80987f9_0
+  - tk=8.6.12=hb8d0fd4_0
+  - tzdata=2023c=h04d1e81_0
+  - wheel=0.38.4=py311hca03da5_0
+  - xz=5.4.2=h80987f9_0
+  - zlib=1.2.13=h5a0b063_0
+prefix: /Users/admin/anaconda3/envs/minerva

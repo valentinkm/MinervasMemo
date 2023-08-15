@@ -33,7 +33,7 @@ def vtt_to_md(vtt_path):
             if current_speaker and new_speaker != current_speaker:
                 docs_md.append("\n")
                 # Add the previous speaker's name and timestamps to the output
-                docs_md.append(f'"{current_speaker}" [{current_start_timestamp}-{current_end_timestamp}]')
+                docs_md.append(f'### "{current_speaker}" [{current_start_timestamp}-{current_end_timestamp}]')
                 docs_md.extend(speaker_dialogues) # Add the speaker's dialogues to the output
                 speaker_dialogues = [] # Reset the speaker's dialogues
             current_speaker = new_speaker # Update the current speaker
@@ -57,7 +57,7 @@ def vtt_to_md(vtt_path):
     # Add the last speaker's dialogues to the output
     if current_speaker:
         docs_md.append("\n")
-        docs_md.append(f'"{current_speaker}" [{current_start_timestamp}-{current_end_timestamp}]')
+        docs_md.append(f'### "{current_speaker}" [{current_start_timestamp}-{current_end_timestamp}]')
         docs_md.extend(speaker_dialogues)
 
     # Write to a .md file

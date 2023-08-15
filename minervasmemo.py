@@ -1,5 +1,5 @@
 import argparse
-from loader import vtt_to_md
+from converter import vtt_to_md
 from summarizer import summarizer
 
 def main ():

@@ -3,3 +3,6 @@
 
 # OS generated files
 .DS_Store
+
+# Compiled bitecode
+__pycache__/

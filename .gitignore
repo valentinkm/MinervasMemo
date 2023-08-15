@@ -6,3 +6,6 @@
 
 # Compiled bitecode
 __pycache__/
+
+# Test files
+docs/

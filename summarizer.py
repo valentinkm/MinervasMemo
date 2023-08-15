@@ -5,15 +5,9 @@ from dotenv import load_dotenv
 load_dotenv()
 from langchain.chat_models import AzureChatOpenAI
 
-# Model
-model = AzureChatOpenAI(request_timeout=30,
-                        model = "summarizer", 
-                        temperature=0.1, 
-                        deployment_name=os.getenv("OPENAI_MODEL_NAME"))
-
-
-
-
-
-                
+def summarizer (raw_md_path):
+    model = AzureChatOpenAI(request_timeout=30,
+                                    model = "summarizer", 
+                                    temperature=0.1, 
+                                    deployment_name=os.getenv("OPENAI_MODEL_NAME"))
 

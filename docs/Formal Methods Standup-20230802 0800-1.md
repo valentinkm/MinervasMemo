@@ -1,6 +1,6 @@
 
 
-"Aaron Peikert" [00:00:37.380-00:00:47.976]
+### "Aaron Peikert" [00:00:37.380-00:00:47.976]
 Yeah.
 Okay, uh, so with that, um, welcome everybody, um, to the pharma rapid stand up. Um, people told me that he has fascinating stuff on customers and information theory, and that he like to present that at some point. And I guess best would be.
 Be some after some of the stand ups in September.
@@ -9,7 +9,7 @@ Book a slot after that just pick 1 in September, I guess, right?
 Um, all on, you had some things on the, uh, symposium and advance cause of confidential psychiatry.
 
 
-"Ulman Lindenberger" [00:06:10.049-00:06:30.525]
+### "Ulman Lindenberger" [00:06:10.049-00:06:30.525]
 Yes, can you hear me? Yeah. Okay so.
 Uh, as you may know there is the so called Max plank center for computation psychiatry, aging research, which is.
 Led by in London and me and Berlin, and associated to that center there also is, uh, international maximum research school interest called. Uh.
@@ -50,19 +50,19 @@ So, all this is to say, and, and the course typically is for advanced Pre Docs a
 Not very advanced Pre dog happens to have a topic for his dissertation, or her dissertation that fits the topic of AI then this person might be just as illegible and I just wanted to let, you know, in fact, I should also let, you know, about the dates. Uh.
 
 
-"Aaron Peikert" [00:06:30.525-00:06:33.339]
+### "Aaron Peikert" [00:06:30.525-00:06:33.339]
 Uh.
 
 
-"Ulman Lindenberger" [00:06:33.339-00:06:46.083]
+### "Ulman Lindenberger" [00:06:33.339-00:06:46.083]
 I, um, let's just find out whether I, I have them already in my calendar at sometime in September 24. um.
 
 
-"Aaron Peikert" [00:06:46.083-00:06:50.996]
+### "Aaron Peikert" [00:06:46.083-00:06:50.996]
 Yeah.
 
 
-"Ulman Lindenberger" [00:07:54.479-00:08:01.917]
+### "Ulman Lindenberger" [00:07:54.479-00:08:01.917]
 Yes, it starts.
 It starts probably on.
 Saturday September 7.
@@ -76,25 +76,25 @@ Uh, are relevant for whatever people are doing in terms of the dissertation or q
 Um, yeah, and I just wanted to let, you know about this in advance.
 
 
-"Aaron Peikert" [00:08:13.199-00:08:16.702]
+### "Aaron Peikert" [00:08:13.199-00:08:16.702]
 Cool at 1st I was disappointed that it's not in 1 of the classes but then you said, uh, which we then happened to enjoy, uh, now that it's on the end dangerous.
 List of the United Nations.
 
 
-"Ulman Lindenberger" [00:08:29.369-00:08:44.598]
+### "Ulman Lindenberger" [00:08:29.369-00:08:44.598]
 Yes, and, I mean, it doesn't happen very often that you wake up and check a walk and have a look at some Marco and, uh, need to get a little to, to get to the place in the 1st place. So.
 Whoever likes Venice wants to see Venice and never has been there. I mean, uh, apart from the scholarly objectives of such a school, uh, might might consider yeah.
 
 
-"Aaron Peikert" [00:08:44.598-00:08:52.599]
+### "Aaron Peikert" [00:08:44.598-00:08:52.599]
 Yeah, we have to think about a process, um, and probably you and I should also talk about it, right? At some point. Yeah.
 
 
-"Ulman Lindenberger" [00:08:52.599-00:08:55.040]
+### "Ulman Lindenberger" [00:08:52.599-00:08:55.040]
 Okay.
 
 
-"Aaron Peikert" [00:10:21.239-00:10:34.933]
+### "Aaron Peikert" [00:10:21.239-00:10:34.933]
 Speaking of dates, um, I invited almost everyone to Google calendar. I wasn't sure whether or not I should invite the team on, uh, as well.
 Um, but the rest of you should have gotten an email about a former methods calendar. Um, main purpose is, uh, vacations and things like.
 Dennis, um.
@@ -107,11 +107,11 @@ Move move on with these things and close this full request sometime in the next 
 Then I can finalize it and send, uh, more final version. I mean, it's, it's called living overview and, uh, I still intended to be living, but, uh, yeah. Um.
 
 
-"Ulman Lindenberger" [00:10:34.933-00:10:42.152]
+### "Ulman Lindenberger" [00:10:34.933-00:10:42.152]
 Uh, can you just remind me of how to access this? This is also on this type thing or how does this work.
 
 
-"Aaron Peikert" [00:11:50.579-00:11:56.362]
+### "Aaron Peikert" [00:11:50.579-00:11:56.362]
 Yes, it was also on this, get something. I send an email I sent a link in the chat where this particular pool request.
 Yes, and then share my screen for a moment.
 So so this is how it looks like an initial draft procedure checklists. Um.
@@ -123,11 +123,11 @@ Just written it down so that you can take a look. I know.
 Have some hints on how to proceed with these things.
 
 
-"Ulman Lindenberger" [00:11:56.362-00:11:58.858]
+### "Ulman Lindenberger" [00:11:56.362-00:11:58.858]
 Thank you.
 
 
-"Aaron Peikert" [00:15:49.889-00:15:53.939]
+### "Aaron Peikert" [00:15:49.889-00:15:53.939]
 Um, so then.
 I have added a couple of interesting blog posts in there, because I like to read them and find them fun. 1, is that if you ask how the professors to grade in an undergraduate course, for social sciences. So the whole bachelor program at Howard, it gets a grumpy and average of 3 point.
 2, which is pretty amazing to just think that chatbot can.
@@ -157,7 +157,7 @@ Yeah, I think that's it from my side of things.
 And is there any, anyone else who wants to add.
 
 
-"Leonie Hagitte" [00:17:20.219-00:17:27.074]
+### "Leonie Hagitte" [00:17:20.219-00:17:27.074]
 Yeah, maybe I can add a little something. Um, yeah, because I just heard from a friend that, um, in September, I think the week before, um, a lot of your goes to Munich and there's the, um, sounds good from the open science. There's also, um.
 Like, a summer school at the, um, I think about computation of psychiatry, and they also offer the opportunity to do the courses online. Um, and it's not.
 Um, I think you have to pay, like, 15 for attending the lectures and I think 100 to do the tutorials as well. And it's also for, I think 4 or 5 days. I'm not quite sure.
@@ -169,7 +169,7 @@ Very convenient. And if someone has.
 The time and the opportunity to do more than this could be an opportunity as well. I think.
 
 
-"Aaron Peikert" [00:18:41.789-00:18:48.636]
+### "Aaron Peikert" [00:18:41.789-00:18:48.636]
 Very nice. I add this link to the agenda as well so that you can access it during the next week.
 Okay, um, I just remember that I think there was a tentative plan for taxonomy to meet.
 Today, but, uh, since we haven't invited Anna, I suggest we do it next week. Um.
@@ -180,17 +180,17 @@ Yeah, uh, I guess then we can say goodbye to most of the people both who are not
 How do we get your Munich and so forth? Thank you so much.
 
 
-"Valentin Kriegmair" [00:18:48.636-00:18:50.299]
+### "Valentin Kriegmair" [00:18:48.636-00:18:50.299]
 You.
 
 
-"Leo Kosanke" [00:18:50.299-00:18:51.877]
+### "Leo Kosanke" [00:18:50.299-00:18:51.877]
 Bye bye.
 
 
-"Ulman Lindenberger" [00:18:51.877-00:18:56.058]
+### "Ulman Lindenberger" [00:18:51.877-00:18:56.058]
 Bye bye.
 
 
-"Aaron Peikert" [00:18:56.058-00:18:59.436]
+### "Aaron Peikert" [00:18:56.058-00:18:59.436]
 Let me see you on that.

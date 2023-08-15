@@ -1,4 +1,4 @@
-def vtt_to_md(vtt_path)
+def vtt_to_md(vtt_path):
     """
     Convert a .vtt file to a .md file and remove redundant information
 
@@ -8,7 +8,6 @@ def vtt_to_md(vtt_path)
     Returns:
     - md_path (str): Path to the .md file
     """
-    vtt_path = "docs/Formal Methods Standup-20230802 0800-1.vtt"
     with open(vtt_path, "r", encoding="utf-8") as file:
         vtt_content = file.readlines()
 
@@ -66,5 +65,5 @@ def vtt_to_md(vtt_path)
 
     with open(md_path, "w", encoding="utf-8") as file:
         file.write("\n".join(docs_md))
-        
+
     return md_path

@@ -8,20 +8,13 @@ from langchain.document_loaders import UnstructuredMarkdownLoader
 from converter import vtt_to_md
 
 from langchain.chains.summarize import load_summarize_chain
-from langchain.docstore.document import Document
 from langchain.prompts import PromptTemplate
-from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
-from langchain.text_splitter import MarkdownHeaderTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
-from langchain.chains.combine_documents.stuff import StuffDocumentsChain
-from langchain.chains.mapreduce import MapReduceChain
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.chains import ReduceDocumentsChain, MapReduceDocumentsChain
 import openai
-from langchain.chains.mapreduce import MapReduceChain
-from langchain.chains import ReduceDocumentsChain, MapReduceDocumentsChain
-from langchain.chat_models import ChatOpenAI
+from langchain.chains import SimpleSequentialChain
+from langchain.prompts import ChatPromptTemplate
 
 openai.api_key = os.environ['OPENAI_API_KEY']
 
@@ -35,21 +28,7 @@ r_splitter = RecursiveCharacterTextSplitter(
     length_function = len
 )
 
-######################## Splitting Option 1 Context Aware Split by Speaker ######################
-
-with open(md_path, 'r', encoding='utf-8') as file:
-    md_script = file.read()
-
-headers_to_split_on = [("###", "Speaker 3")]
-
-md_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
-
-speaker_splits = md_splitter.split_text(md_script)
-
-speaker_recursive_splits = r_splitter.split_documents(speaker_splits)
-
-
-########################### Splitting Option 2 Blind Splitting #################################
+########################### Splitting  #################################
 
 def load_transcript(md_path):
     loader = UnstructuredMarkdownLoader(md_path)
@@ -58,10 +37,9 @@ def load_transcript(md_path):
 
 data = load_transcript(md_path)
 
-blind_recursive_splits = r_splitter.split_documents(data)
+docs = r_splitter.split_documents(data)
 
-############################ Summarize Option 1 Map Reduce #################################################
-docs = blind_recursive_splits
+########################### Model ##################################
 
 llm = AzureChatOpenAI(request_timeout=30,
                        model = "summarizer", 
@@ -69,53 +47,7 @@ llm = AzureChatOpenAI(request_timeout=30,
                        deployment_name=os.getenv("OPENAI_MODEL_NAME"),
                        openai_api_key=os.getenv("OPENAI_API_KEY"))
 
-
-# Map
-map_template = """Act as an excellent executive assistant. The following is a set of machine generated speaker transcripts of a meeting sometimes containing words that do not fit the context and may need to be replaced to make sense.
-{docs}
-Based on this list of meeting excerpts, please identify all relevant talking points and agreed upon action items. Regular participants of the meeting include: Aaron Peikert, Timo von Oertzen, Hannes Diemerling, Leonie Hagitte, Maximilian Ernst, Valentin Kriegmair, Leo Kosanke, Ulman Lindenberger, Moritz Ketzer and Nicklas Hafiz.
-CONCISE SUMMARY IN ENGLISH:"""
-map_prompt = PromptTemplate.from_template(map_template)
-map_chain = LLMChain(llm=llm, prompt=map_prompt)
-
-# Reduce
-reduce_template = """Act as an excellent executive assistant. The following is set of summaries of a team meeting
-{doc_summaries}
-Take these and distill it into a detailed final, consolidated summary of the main talking points and action items of the whole meeting.
-Helpful Answer:"""
-reduce_prompt = PromptTemplate.from_template(reduce_template)
-reduce_chain = LLMChain(llm=llm, prompt=reduce_prompt)
-
-# Takes a list of documents, combines them into a single string, and passes this to an LLMChain
-combine_documents_chain = StuffDocumentsChain(
-    llm_chain=reduce_chain, document_variable_name="doc_summaries"
-)
-
-# Combines and iteravely reduces the mapped documents
-reduce_documents_chain = ReduceDocumentsChain(
-    # This is final chain that is called.
-    combine_documents_chain=combine_documents_chain,
-    # If documents exceed context for `StuffDocumentsChain`
-    collapse_documents_chain=combine_documents_chain,
-    # The maximum number of tokens to group documents into.
-    token_max=4000,
-)
-
-# Combining documents by mapping a chain over them, then combining results
-map_reduce_chain = MapReduceDocumentsChain(
-    # Map chain
-    llm_chain=map_chain,
-    # Reduce chain
-    reduce_documents_chain=reduce_documents_chain,
-    # The variable name in the llm_chain to put the documents in
-    document_variable_name="docs",
-    # Return the results of the map steps in the output
-    return_intermediate_steps=False,
-)
-
-# result = map_reduce_chain.run(docs)
-
-############################ Summarize Option 2 Refine #################################################
+############################ Refine Chain ###########################
 
 from langchain.prompts import PromptTemplate
 
@@ -168,28 +100,28 @@ refine_chain = load_summarize_chain(
         refine_prompt=refine_prompt,
 )
 
-# refine_result = refine_chain({"input_documents": docs}, return_only_outputs=True)
-
-from langchain.chains import SimpleSequentialChain
-from langchain.prompts import ChatPromptTemplate
-
+intermediate_summary = refine_chain({"input_documents": docs}, return_only_outputs=True)
 
 prompt_bullet = ChatPromptTemplate.from_template(
     "You are an excellent executive assistant.\
-    Your task is to create a detailed bulleted summary of the following meeting notes.\
-    Please format your response as markdown code. Highlight agreed upon actions \
+    Your task is to create a detailed bulleted summary of the following meeting notes lossing as little meaning as possible.\
+    Please format your response as markdown code. Highlight datees and agreed upon actions. \
     Summary: {summary}\
     Format: \
     '## Meeting Summary \
     ### Participants\
     ### Discussed\
-    - **Speaker 1**\
-        - points \
+    - **<Participant 1>:** <participants Message>\
+        - point 1\
+        - point 2\
         - ...\
-    - ...\
+    - **<Participant 2>:** <participants Message>\
+        - point 1\
+        - point 2\
+        - ...\
     ### Action Items\
     - <a-list-of-follow-up-actions-with-owner-names>\
-    ### Side Comments'"
+    ### Side Comments <if any were made>'"
 )
 
 chain_bullet = LLMChain(llm=llm, prompt=prompt_bullet, 
@@ -200,4 +132,11 @@ overall_simple_chain = SimpleSequentialChain(chains=[refine_chain, chain_bullet]
                                              verbose=True
                                             )
 
-overall_simple_chain({"input": docs}, return_only_outputs=False)
+final_summary = overall_simple_chain({"input": docs}, return_only_outputs=True)
+
+final_summary_output = final_summary['output']
+
+with open(f"{md_path[:-3]}_summary.md", 'w') as file:
+    file.write(final_summary_output)
+
+

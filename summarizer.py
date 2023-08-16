@@ -116,20 +116,20 @@ map_reduce_chain = MapReduceDocumentsChain(
 result = map_reduce_chain.run(docs)
 
 ############################ Summarize Option 2 Refine #################################################
-target_len = 500
+target_len = range(50, 151)
+
 
 from langchain.prompts import PromptTemplate
 
 prompt_template = """You are an excellent executive assistent. You are given an excerpt of a machine generated transcript of a group meeting sometimes containing words that do not fit the context and may need to be replaced to make sense.
+    {text}
+    Based on the excerpt please identify all relevant talking points and agreed upon action items. Do NOT make any points up. Regular participants of the meeting include: Aaron Peikert, Timo von Oertzen, Hannes Diemerling, Leonie Hagitte, Maximilian Ernst, Valentin Kriegmair, Leo Kosanke, Ulman Lindenberger, Moritz Ketzer and Nicklas Hafiz.
     Tone: formal
     Format: Concise meeting summary
     Tasks:
     - compress to about 50%
-    - For each section by one speaker highlight action items and owners
-    - highlight the agreements
-    - Use bullet points if needed
-    {text}
-    Based on the excerpt please identify all relevant talking points and agreed upon action items. Do NOT make any points up. Regular participants of the meeting include: Aaron Peikert, Timo von Oertzen, Hannes Diemerling, Leonie Hagitte, Maximilian Ernst, Valentin Kriegmair, Leo Kosanke, Ulman Lindenberger, Moritz Ketzer and Nicklas Hafiz.
+    - Highlight who is speaking, action items and agreements
+    - Use bullet points if needed.
     CONCISE SUMMARY IN ENGLISH:"""
 
 PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
@@ -163,5 +163,5 @@ refine_chain = load_summarize_chain(
     )
 result = refine_chain({"input_documents": docs}, return_only_outputs=True)
 
-
+result
 

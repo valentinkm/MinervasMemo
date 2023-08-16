@@ -122,7 +122,7 @@ from langchain.prompts import PromptTemplate
 
 prompt_template = """You are an excellent executive assistent. You are given an excerpt of a machine generated transcript of a group meeting sometimes containing words that do not fit the context and may need to be replaced to make sense.
     Tone: formal
-    Format: Technical meeting summary
+    Format: Concise meeting summary
     Tasks:
     - compress to about 50%
     - For each section by one speaker highlight action items and owners

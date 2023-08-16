@@ -113,30 +113,35 @@ map_reduce_chain = MapReduceDocumentsChain(
     return_intermediate_steps=False,
 )
 
-result = map_reduce_chain.run(docs)
+# result = map_reduce_chain.run(docs)
 
 ############################ Summarize Option 2 Refine #################################################
-target_len = range(50, 151)
+target_len = range(100, 250)
 
 
 from langchain.prompts import PromptTemplate
 
-prompt_template = """You are an excellent executive assistent. You are given an excerpt of a machine generated transcript of a group meeting sometimes containing words that do not fit the context and may need to be replaced to make sense.
+prompt_template = """You are an excellent executive assistent. You are given an excerpt of a machine generated transcript of a stand-up meeting of the formal methods group at MPI-Berlin. The script sometimes contains words that do not fit the context or misspelled names and may need to be replaced accordingly to make sense.
     {text}
-    Based on the excerpt please identify all relevant talking points and agreed upon action items. Do NOT make any points up. Regular participants of the meeting include: Aaron Peikert, Timo von Oertzen, Hannes Diemerling, Leonie Hagitte, Maximilian Ernst, Valentin Kriegmair, Leo Kosanke, Ulman Lindenberger, Moritz Ketzer and Nicklas Hafiz.
+    Based on the excerpt please identify all relevant talking points and agreed upon action items. Do NOT make any points up. For context: Regular participants of the meeting include: Aaron Peikert, Timo von Oertzen, Hannes Diemerling, Leonie Hagitte, Maximilian Ernst, Valentin Kriegmair, Leo Kosanke, Ulman Lindenberger, Moritz Ketzer and Nicklas Hafiz.
     Tone: formal
-    Format: Concise meeting summary
+    Format: 
+    - Concise meeting summary
+    - Participants: <participants>
+    - Discussed: <Discussed-items>
+    - Follow-up actions: <a-list-of-follow-up-actions-with-owner-names>
     Tasks:
-    - compress to about 50%
-    - Highlight who is speaking, action items and agreements
-    - Use bullet points if needed.
+    - Highlight who is speaking, action items, dates and agreements
+    - Create a list of bullet points for each section by a speaker or the group.
+    - Work step by step.
     CONCISE SUMMARY IN ENGLISH:"""
 
 PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
 
 refine_template = (
+        "Your are an excellent executive assistent \n"
         "Your job is to produce a final summary\n"
-        "We have provided an existing summary up to a certain point: {existing_answer}\n"
+        "We have provided an existing meeting summary up to a certain point: {existing_answer}\n"
         "We have the opportunity to refine the existing summary"
         "(only if needed) with some more context below.\n"
         "------------\n"
@@ -146,13 +151,16 @@ refine_template = (
         "Participants: <participants>"
         "Discussed: <Discussed-items>"
         "Follow-up actions: <a-list-of-follow-up-actions-with-owner-names>"
+        "Highlight who is speaking, action items, dates and agreements"
+        "Create a list of bullet points for each section by a speaker or the group."
+        "Work step by step."
         "If the context isn't useful, return the original summary, do NOT make anything up. Highlight agreements and follow-up actions and owners."
-    )
+)
 
 refine_prompt = PromptTemplate(
         input_variables=["existing_answer", "text"],
         template=refine_template,
-    )
+)
 
 refine_chain = load_summarize_chain(
         llm,
@@ -160,8 +168,9 @@ refine_chain = load_summarize_chain(
         return_intermediate_steps=False,
         question_prompt=PROMPT,
         refine_prompt=refine_prompt,
-    )
-result = refine_chain({"input_documents": docs}, return_only_outputs=True)
+)
 
-result
+refine_result = refine_chain({"input_documents": docs}, return_only_outputs=True)
+
+refine_result
 

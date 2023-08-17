@@ -1,13 +1,14 @@
-def vtt_to_md(vtt_path):
+def vtt_to_md(transcript):
     """
-    Convert a .vtt file to a .md file and remove redundant information
+    Convert a webttv meeting transcript .vtt file to a .md file and remove redundant information
 
     Parameters:
-    - vtt_path (str): Path to the .vtt file
+    - transcript (str): Path to the .vtt file in the docs folder
 
     Returns:
-    - md_path (str): Path to the .md file
+    - raw_md (str): Path to the raw .md file of the meeting transcript
     """
+    vtt_path = "docs/" + transcript
     with open(vtt_path, "r", encoding="utf-8") as file:
         vtt_content = file.readlines()
 
@@ -61,9 +62,9 @@ def vtt_to_md(vtt_path):
         docs_md.extend(speaker_dialogues)
 
     # Write to a .md file
-    md_path = vtt_path.replace(".vtt", ".md")
+    raw_md = vtt_path.replace(".vtt", ".md")
 
-    with open(md_path, "w", encoding="utf-8") as file:
+    with open(raw_md, "w", encoding="utf-8") as file:
         file.write("\n".join(docs_md))
 
-    return md_path
+    return raw_md

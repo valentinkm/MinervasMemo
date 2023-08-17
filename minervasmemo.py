@@ -1,6 +1,7 @@
 import argparse
 from converter import vtt_to_md
-from summarizer import summarizer
+from summarizer import generate_summary
+from splitter import split_transcript
 
 def main ():
     parser = argparse.ArgumentParser(description="Convert a .vtt file to a final processed output")
@@ -10,13 +11,16 @@ def main ():
     args = parser.parse_args()
 
     # Convert the .vtt file to a .md file
-    raw_md_path = vtt_to_md(args.input)
+    raw_md = vtt_to_md(args.input)
 
-    # LLM
-    md_path = summarizer(raw_md_path)
+    # Split .md in chunks
+    docs = split_transcript(raw_md)
 
-    with open(args.output, "w", encoding="utf-8") as file:
-        file.write(md_path)
+    # Generate llm based summary
+    summary_md = generate_summary(docs)
+    
+    with open(args.output, 'w') as file:
+        file.write(summary_md)
 
 if __name__ == "__main__":
     main()

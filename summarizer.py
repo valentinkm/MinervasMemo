@@ -7,8 +7,15 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain.chains.llm import LLMChain
 from langchain.chains import SimpleSequentialChain
 from prompts import init_proompt, refine_prompt, bullet_prompt
+from langfuse.callback import CallbackHandler
 
 load_dotenv()
+
+PUBLIC_KEY = os.getenv('PUBLIC_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+handler = CallbackHandler(PUBLIC_KEY, SECRET_KEY)
+
 
 llm = AzureChatOpenAI(request_timeout=30,
                        model = "summarizer", 
@@ -21,7 +28,7 @@ refine_chain = load_summarize_chain(
         chain_type="refine",
         return_intermediate_steps=False,
         question_prompt=init_proompt,
-        refine_prompt=refine_prompt,
+        refine_prompt=refine_prompt
 )
 
 # intermediate_summary = refine_chain({"input_documents": docs}, return_only_outputs=True)
@@ -35,5 +42,5 @@ overall_simple_chain = SimpleSequentialChain(chains=[refine_chain, bullet_chain]
                                             )
 
 def generate_summary(docs):
-    final_summary = overall_simple_chain({"input": docs}, return_only_outputs=True)
+    final_summary = overall_simple_chain({"input": docs}, return_only_outputs=True, callbacks=[handler])
     return final_summary['output']

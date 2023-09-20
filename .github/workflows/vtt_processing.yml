@@ -41,3 +41,10 @@ jobs:
           for file in "${files[@]}"; do
             python minervasmemo.py -i "$file" -o "${file%.vtt}.md" --mode convert
           done
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Add cleaned up transcript as markdown" || echo "No changes to commit"
+          git push

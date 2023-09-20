@@ -64,7 +64,9 @@ def vtt_to_md(transcript):
     # Write to a .md file
     raw_md = vtt_path.replace(".vtt", ".md")
 
-    with open(raw_md, "w", encoding="utf-8") as file:
+    with open(f"docs/{raw_md}", "w", encoding="utf-8") as file:
         file.write("\n".join(docs_md))
 
     return raw_md
+
+

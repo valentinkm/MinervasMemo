@@ -23,13 +23,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Get list of changed vtt files
-        id: getfile
+      - name: Get changed files
         run: |
           echo "Changed files:"
-          changed_files=$(git diff --name-only HEAD~1 HEAD | grep 'docs/.*\.vtt$')
-          echo "$changed_files"
-          echo "CHANGED_FILES=$changed_files" >> $GITHUB_ENV
+          git fetch --depth=2 || echo "Failed to fetch. Continuing anyway..."
+          changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | grep 'docs/.*\.vtt$' || echo "")
+          if [[ -z "$changed_files" ]]; then
+            echo "No .vtt files changed."
+          else
+            echo "$changed_files"
+            echo "CHANGED_FILES=$changed_files" >> $GITHUB_ENV
+          fi
 
       - name: Run conversion script
         run: |

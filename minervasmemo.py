@@ -7,20 +7,23 @@ def main ():
     parser = argparse.ArgumentParser(description="Convert a .vtt file to a final processed output")
     parser.add_argument("-i", "--input", required=True, help="Path to the .vtt file")
     parser.add_argument("-o", "--output", required=True, help="Path to the output file")
-                        
+    parser.add_argument("--mode", choices=['convert', 'summarize', 'all'], default='all', help="Operation mode")
+
     args = parser.parse_args()
 
-    # Convert the .vtt file to a .md file
-    raw_md = vtt_to_md(args.input)
-
-    # Split .md in chunks
-    docs = split_transcript(raw_md)
-
-    # Generate llm based summary
-    summary_md = generate_summary(docs)
+    if args.mode in ['convert', 'all']:
+        # Convert the .vtt file to a .md file
+        raw_md = vtt_to_md(args.input)
     
-    with open(args.output, 'w') as file:
-        file.write(summary_md)
+    if args.mode in ['summarize', 'all']:
+        # Convert the .vtt file to a .md file
+        raw_md = vtt_to_md(args.input)
+        # Split .md in chunks
+        docs = split_transcript(raw_md)
+        # Generate llm based summary
+        summary_md = generate_summary(docs)
+        with open(args.output, 'w') as file:
+            file.write(summary_md)
 
 if __name__ == "__main__":
     main()

@@ -35,12 +35,22 @@ jobs:
             echo "CHANGED_FILES=$changed_files" >> $GITHUB_ENV
           fi
 
+      - name: List files before running script
+        run: ls -l
+
       - name: Run conversion script
         run: |
           IFS=' ' read -ra files <<< "$CHANGED_FILES"
           for file in "${files[@]}"; do
             python minervasmemo.py -i "$file" -o "${file%.vtt}.md" --mode convert
           done
+
+      - name: List files after running script
+        run: ls -l
+
+      - name: Check git status
+        run: git status
+
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"

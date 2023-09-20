@@ -1,0 +1,5 @@
+name: Process VTT File
+on:
+  push:
+    paths:
+      - 'docs/**/*.vtt'

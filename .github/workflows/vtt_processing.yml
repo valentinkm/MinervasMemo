@@ -1,24 +1,39 @@
 name: Process VTT File
+
 on:
   push:
     paths:
       - 'docs/**/*.vtt'
-      
+
+env:
+  PYTHON_VERSION: 3.x
+
 jobs:
-  print-message:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print a message
-        run: echo "A .vtt file was pushed to docs/"
-      
-  run-conversion:
+  process-vtt:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Get list of changed vtt files
+        id: getfile
+        run: |
+          echo "Changed files:"
+          changed_files=$(git diff --name-only HEAD~1 HEAD | grep 'docs/.*\.vtt$')
+          echo "$changed_files"
+          echo "CHANGED_FILES=$changed_files" >> $GITHUB_ENV
+
       - name: Run conversion script
-        run: python convert_vtt_to_md.py
+        run: |
+          IFS=' ' read -ra files <<< "$CHANGED_FILES"
+          for file in "${files[@]}"; do
+            python minervasmemo.py -i "$file" -o "${file%.vtt}.md" --mode convert
+          done

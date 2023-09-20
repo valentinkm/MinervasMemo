@@ -47,4 +47,5 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -A
           git commit -m "Add cleaned up transcript as markdown" || echo "No changes to commit"
-          git push
+          git push https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
+

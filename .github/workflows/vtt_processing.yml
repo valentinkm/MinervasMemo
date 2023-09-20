@@ -22,6 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+      
+      - name: Debug Git Logs
+      run: |
+      git log -n 5 --pretty=format:"%h - %an, %ar : %s"
 
       - name: Get changed files
         run: |

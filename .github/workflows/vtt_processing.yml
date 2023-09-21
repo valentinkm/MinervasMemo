@@ -1,0 +1,73 @@
+name: Process and Summarize VTT File
+
+on:
+  push:
+    paths:
+      - 'docs/**/*.vtt'
+
+env:
+  PYTHON_VERSION: 3.x
+
+jobs:
+  process-vtt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set Environment Variables
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "PUBLIC_KEY=${{ secrets.PUBLIC_KEY }}" >> $GITHUB_ENV
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          OPENAI_API_BASE: https://zit-openai2.openai.azure.com/
+          OPENAI_SUMMARIZER_NAME: text-davinci-003
+          OPENAI_EMBEDDING_DEPLOYMENT_NAME: text-embedding-ada-002
+          OPENAI_EMBEDDING_MODEL_NAME: text-embedding-ada-002
+          OPENAI_API_TYPE: azure
+          OPENAI_API_VERSION: 2023-03-15-preview
+
+      - name: Debug Git Logs
+        run: |
+          git log -n 5 --pretty=format:"%h - %an, %ar : %s"
+
+      - name: Find changed VTT files
+        id: findfile
+        run: |
+          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs/.*\.vtt')
+          echo "Changed VTT files: $files"
+          echo "::set-output name=files::$files"
+
+      - name: List files before running script
+        run: ls -l docs/
+
+      - name: Run Minerva's Memo script for summarization
+        run: |
+          for file in ${{ steps.findfile.outputs.files }}; do
+            python minervasmemo.py -i "$file" --mode summarize
+          done
+
+      - name: List files after running script
+        run: ls -l docs/
+
+      - name: Check git status
+        run: git status
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
+          git add docs/*_transcript.md docs/*_summary.md
+          git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
+          git push

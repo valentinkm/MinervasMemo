@@ -17,7 +17,7 @@ def main():
 
     if args.mode in ['convert', 'all']:
         # Convert the .vtt file to a .md file
-        convert_output = f"docs/{output_base}_transcript.md"
+        convert_output = f"{output_base}_transcript.md"
         raw_md = vtt_to_md(args.input, convert_output)
     
     if args.mode in ['summarize', 'all']:
@@ -29,9 +29,9 @@ def main():
         docs = split_transcript(raw_md)
         
         # Generate llm based summary
-        summary_output = f"docs/{output_base}_summary.md"
+        summary_output = f"{output_base}_summary.md"
         summary_md = generate_summary(docs)
-        
+
         with open(summary_output, 'w') as file:
             file.write(summary_md)
 

@@ -33,10 +33,10 @@ jobs:
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY_ME }}" >> $GITHUB_ENV
           echo "PUBLIC_KEY=${{ secrets.PUBLIC_KEY }}" >> $GITHUB_ENV
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       - name: Debug Git Logs
-        run: |
-          git log -n 5 --pretty=format:"%h - %an, %ar : %s"
+        run: git log -n 5 --pretty=format:"%h - %an, %ar : %s"
 
       - name: Find changed VTT files
         id: findfile
@@ -54,11 +54,10 @@ jobs:
             python minervasmemo.py -i "$file" --mode summarize
           done
 
-      - name: List files after running script
-        run: ls -l docs/
-
-      - name: Create and checkout new branch
+      - name: Fetch latest main and checkout feature branch
         run: |
+          git fetch origin main:main
+          git checkout main
           git checkout -b feature/add-summary-${{ github.sha }}
 
       - name: Commit changes to new branch
@@ -75,4 +74,4 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          gh pr create --base main --head feature/add-summary-${{ github.sha }} --title "Add cleaned up transcript and summary" --body "Automated pull request" --reviewer ${{ github.actor }}
+          gh pr create --base main --head feature/add-summary-${{ github.sha }} --title "Add cleaned up transcript and summary" --body "Automated pull request" --reviewer ${{ github.actor }},YourGitHubUsername

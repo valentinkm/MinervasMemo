@@ -22,6 +22,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
@@ -54,14 +57,22 @@ jobs:
       - name: List files after running script
         run: ls -l docs/
 
-      - name: Check git status
-        run: git status
+      - name: Create and checkout new branch
+        run: |
+          git checkout -b feature/add-summary-${{ github.sha }}
 
-      - name: Commit and push changes
+      - name: Commit changes to new branch
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
           git add docs/*_transcript.md docs/*_summary.md
           git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
-          git push
+
+      - name: Push new branch
+        run: |
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
+          git push origin feature/add-summary-${{ github.sha }}
+
+      - name: Create Pull Request
+        run: |
+          gh pr create --base main --head feature/add-summary-${{ github.sha }} --title "Add cleaned up transcript and summary" --body "Automated pull request" --reviewer ${{ github.actor }}

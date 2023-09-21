@@ -6,6 +6,7 @@ from splitter import split_transcript
 def main():
     parser = argparse.ArgumentParser(description="Convert a .vtt file to a final processed output")
     parser.add_argument("-i", "--input", required=True, help="Path to the .vtt file")
+
     parser.add_argument("-o", "--output", help="Base path to the output file(s)")
     parser.add_argument("--mode", choices=['convert', 'summarize'], default='convert', help="Operation mode")
 
@@ -33,6 +34,7 @@ def main():
         summary_md = generate_summary(docs)
         
         with open(summary_output, 'w') as file:
+
             file.write(summary_md)
 
 if __name__ == "__main__":

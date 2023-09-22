@@ -63,9 +63,9 @@ jobs:
           echo "::set-output name=info::$info"
 
       - name: Checkout temporary base branch
-          run: |
-            current_branch=$(echo ${{ github.ref }} | sed -e "s/refs\/heads\///g")
-            git checkout temp-$current_branch
+        run: |
+          current_branch=$(echo ${{ github.ref }} | sed -e "s/refs\/heads\///g")
+          git checkout temp-$current_branch
 
       - name: Create and checkout new feature branch
         run: |

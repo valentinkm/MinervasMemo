@@ -52,7 +52,7 @@ jobs:
       - name: Run Minerva's Memo script for summarization
         run: |
           for file in ${{ steps.findfile.outputs.files }}; do
-            python minervasmemo.py -i "$file" --mode convert
+            python minervasmemo.py -i "$file" --mode summarize
           done
 
       - name: Fetch latest main into a temporary branch

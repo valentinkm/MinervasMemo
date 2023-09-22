@@ -58,7 +58,9 @@ jobs:
       - name: Read token and cost information
         id: read_info
         run: |
-          info=$(cat docs/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+          model_info="Model: gpt-3.5-turbo"
+          token_info=$(cat docs/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+          info="$model_info\\n$token_info"
           echo "Token and Cost Info: $info"
           echo "::set-output name=info::$info"
 
@@ -92,5 +94,5 @@ jobs:
           info=$(echo -e "$info")
           gh pr create --base dev-test --head feature/add-summary-${{ github.sha }} \
           --title "Add cleaned up transcript and summary" \
-          --body "Automated pull request. $info" \
+          --body "$info" \
           --reviewer ${{ github.actor }}

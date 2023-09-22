@@ -8,6 +8,8 @@ from langchain.chains.llm import LLMChain
 from langchain.chains import SimpleSequentialChain
 from prompts import init_proompt, refine_prompt, bullet_prompt
 from langfuse.callback import CallbackHandler
+from langchain.llms import OpenAI
+from langchain.callbacks import get_openai_callback
 
 # Initialization variables set to None
 llm = None
@@ -47,6 +49,15 @@ def generate_summary(docs):
     
     if llm is None:
         initialize_summarizer()
+    
+    token_info = {}
+
+    with get_openai_callback() as cb:
+        final_summary = overall_simple_chain({"input": docs}, return_only_outputs=True, callbacks=[handler])
         
-    final_summary = overall_simple_chain({"input": docs}, return_only_outputs=True, callbacks=[handler])
-    return final_summary['output']
+        token_info['Total Tokens'] = cb.total_tokens
+        token_info['Prompt Tokens'] = cb.prompt_tokens
+        token_info['Completion Tokens'] = cb.completion_tokens
+        token_info['Total Cost (USD)'] = cb.total_cost
+        
+    return final_summary['output'], token_info

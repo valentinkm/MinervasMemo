@@ -58,7 +58,7 @@ jobs:
       - name: Read token and cost information
         id: read_info
         run: |
-          info=$(cat docs/*_token_info.txt)
+          info=$(cat docs/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
           echo "Token and Cost Info: $info"
           echo "::set-output name=info::$info"
 
@@ -88,7 +88,9 @@ jobs:
 
       - name: Create Pull Request
         run: |
+          info="${{ steps.read_info.outputs.info }}"
+          info=$(echo -e "$info")
           gh pr create --base dev-test --head feature/add-summary-${{ github.sha }} \
           --title "Add cleaned up transcript and summary" \
-          --body "Automated pull request. \n\nToken and Cost Information:\n${{ steps.read_info.outputs.info }}" \
+          --body "Automated pull request. $info" \
           --reviewer ${{ github.actor }}

@@ -1,4 +1,4 @@
-name: Process VTT File
+name: Process and Summarize VTT File
 
 on:
   push:
@@ -22,9 +22,19 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+
       - name: Install dependencies
         run: pip install -r requirements.txt
-      
+
+      - name: Set Environment Variables
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY_ME }}" >> $GITHUB_ENV
+          echo "PUBLIC_KEY=${{ secrets.PUBLIC_KEY }}" >> $GITHUB_ENV
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
       - name: Debug Git Logs
         run: |
           git log -n 5 --pretty=format:"%h - %an, %ar : %s"
@@ -35,28 +45,34 @@ jobs:
           files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs/.*\.vtt')
           echo "Changed VTT files: $files"
           echo "::set-output name=files::$files"
-      
-      - name: List files before running script
-        run: ls -l
 
-      - name: Run Minerva's Memo script
+      - name: List files before running script
+        run: ls -l docs/
+
+      - name: Run Minerva's Memo script for summarization
         run: |
           for file in ${{ steps.findfile.outputs.files }}; do
-            python minervasmemo.py -i "$file" --mode convert
+            python minervasmemo.py -i "$file" --mode summarize
           done
 
-      - name: List files after running script
-        run: ls -l
+      - name: Fetch latest main and checkout feature branch
+        run: |
+          git fetch origin main:main
+          git checkout main
+          git checkout -b feature/add-summary-${{ github.sha }}
 
-      - name: Check git status
-        run: git status
-
-      - name: Commit and push changes
+      - name: Commit changes to new branch
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
-          git add docs/*.md
-          git commit -m "Add cleaned up transcript as markdown" || echo "No changes to commit"
-          git push
+          git add docs/*_transcript.md docs/*_summary.md
+          git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
 
+      - name: Push new branch
+        run: |
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
+          git push origin feature/add-summary-${{ github.sha }}
+
+      - name: Create Pull Request
+        run: |
+          gh pr create --base main --head feature/add-summary-${{ github.sha }} --title "Add cleaned up transcript and summary" --body "Automated pull request" --reviewer ${{ github.actor }}

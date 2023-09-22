@@ -62,14 +62,18 @@ jobs:
           echo "Token and Cost Info: $info"
           echo "::set-output name=info::$info"
 
-      - name: Checkout temporary base branch
+      - name: Fetch latest base branch into a temporary branch
         run: |
           current_branch=$(echo ${{ github.ref }} | sed -e "s/refs\/heads\///g")
-          git checkout temp-$current_branch
+          git fetch origin $current_branch:temp-$current_branch  # Fetch the current branch into a temporary one
+
+      - name: Checkout temporary base branch
+        run: |
+          git checkout temp-$current_branch  # Checkout the temporary branch
 
       - name: Create and checkout new feature branch
         run: |
-          git checkout -b feature/add-summary-${{ github.sha }}
+          git checkout -b feature/add-summary-${{ github.sha }}  # Create and checkout new feature branch
 
       - name: Commit changes to new branch
         run: |

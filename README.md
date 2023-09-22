@@ -12,4 +12,5 @@ Install dependencies and activate the conda environment for MinervasMemo with
 
 `python minervasmemo.py -i "sample.vtt" --mode summarize`
 - To just convert a .vtt transcript to a cleaned up transcript in markdown:
+
 `python minervasmemo.py -i "sample.vtt" --mode convert`

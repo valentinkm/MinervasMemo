@@ -54,7 +54,7 @@ jobs:
           for file in ${{ steps.findfile.outputs.files }}; do
             python minervasmemo.py -i "$file" --mode summarize
           done
-          
+
       - name: Read token and cost information
         id: read_info
         run: |
@@ -62,10 +62,10 @@ jobs:
           echo "Token and Cost Info: $info"
           echo "::set-output name=info::$info"
 
-    - name: Checkout temporary base branch
-        run: |
-          current_branch=$(echo ${{ github.ref }} | sed -e "s/refs\/heads\///g")
-          git checkout temp-$current_branch
+      - name: Checkout temporary base branch
+          run: |
+            current_branch=$(echo ${{ github.ref }} | sed -e "s/refs\/heads\///g")
+            git checkout temp-$current_branch
 
       - name: Create and checkout new feature branch
         run: |

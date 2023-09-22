@@ -52,13 +52,19 @@ jobs:
       - name: Run Minerva's Memo script for summarization
         run: |
           for file in ${{ steps.findfile.outputs.files }}; do
-            python minervasmemo.py -i "$file" --mode summarize
+            python minervasmemo.py -i "$file" --mode convert
           done
 
-      - name: Fetch latest main and checkout feature branch
+      - name: Fetch latest main into a temporary branch
         run: |
-          git fetch origin main:main
-          git checkout main
+          git fetch origin main:temp-main
+
+      - name: Checkout temporary main branch
+        run: |
+          git checkout temp-main
+
+      - name: Create and checkout new feature branch
+        run: |
           git checkout -b feature/add-summary-${{ github.sha }}
 
       - name: Commit changes to new branch

@@ -88,7 +88,7 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          gh pr create --base $current_branch --head feature/add-summary-${{ github.sha }} \
+          gh pr create --base dev-test --head feature/add-summary-${{ github.sha }} \
           --title "Add cleaned up transcript and summary" \
           --body "Automated pull request. \n\nToken and Cost Information:\n${{ steps.read_info.outputs.info }}" \
           --reviewer ${{ github.actor }}

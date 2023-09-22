@@ -36,7 +36,8 @@ jobs:
           echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       - name: Debug Git Logs
-        run: git log -n 5 --pretty=format:"%h - %an, %ar : %s"
+        run: |
+          git log -n 5 --pretty=format:"%h - %an, %ar : %s"
 
       - name: Find changed VTT files
         id: findfile
@@ -74,4 +75,4 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          gh pr create --base main --head feature/add-summary-${{ github.sha }} --title "Add cleaned up transcript and summary" --body "Automated pull request" --reviewer ${{ github.actor }},YourGitHubUsername
+          gh pr create --base main --head feature/add-summary-${{ github.sha }} --title "Add cleaned up transcript and summary" --body "Automated pull request" --reviewer ${{ github.actor }}

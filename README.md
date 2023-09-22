@@ -17,5 +17,5 @@ Install dependencies and activate the conda environment for MinervasMemo with
 `python minervasmemo.py -i "sample.vtt" --mode convert`
 
 ### Remote Usage for Collaborators
-- Commit and push your `.vtt` webex transcript (e.g. "FormalMethodsStandup-230913.vtt") into the docs/ directory of this repository
-- Review your cleaned up transcript (e.g. "FormalMethodsStandup-230913_transcript.vtt") and summary ("FormalMethodsStandup-230913_summary.vtt") in a new pull request to the main branch
+- Commit and push your `.vtt` webex transcript (e.g. "FormalMethodsStandup-230913.vtt") into the docs/ directory of this repository (don't use spaces in the filename).
+- Review your cleaned up transcript (e.g. "FormalMethodsStandup-230913_transcript.vtt") and summary ("FormalMethodsStandup-230913_summary.vtt") in a new pull request to the main branch.

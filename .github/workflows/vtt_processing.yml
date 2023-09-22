@@ -78,7 +78,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add *.md  # Add all markdown files
+          git add docs/*.md
           git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
 
       - name: Push new branch

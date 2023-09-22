@@ -54,6 +54,7 @@ jobs:
           for file in ${{ steps.findfile.outputs.files }}; do
             python minervasmemo.py -i "$file" --mode summarize
           done
+          
       - name: Read token and cost information
         id: read_info
         run: |
@@ -61,13 +62,10 @@ jobs:
           echo "Token and Cost Info: $info"
           echo "::set-output name=info::$info"
 
-      - name: Fetch latest main into a temporary branch
+    - name: Checkout temporary base branch
         run: |
-          git fetch origin main:temp-main
-
-      - name: Checkout temporary main branch
-        run: |
-          git checkout temp-main
+          current_branch=$(echo ${{ github.ref }} | sed -e "s/refs\/heads\///g")
+          git checkout temp-$current_branch
 
       - name: Create and checkout new feature branch
         run: |
@@ -77,7 +75,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add *.md
+          git add *.md  # Add all markdown files
           git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
 
       - name: Push new branch
@@ -87,7 +85,7 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          gh pr create --base main --head feature/add-summary-${{ github.sha }} \
+          gh pr create --base $current_branch --head feature/add-summary-${{ github.sha }} \
           --title "Add cleaned up transcript and summary" \
           --body "Automated pull request. \n\nToken and Cost Information:\n${{ steps.read_info.outputs.info }}" \
           --reviewer ${{ github.actor }}

@@ -9,10 +9,10 @@ Install dependencies and activate the conda environment for MinervasMemo with
 ## Usage
 ### Local Usage
 - Deposit your transcript VTT files in the "docs/" subdirectory.
-- To convert and summarize a .vtt transcript file run:
+- To convert and summarize a VTT transcript file run:
   
 `python minervasmemo.py -i "sample.vtt" --mode summarize`
-- To just convert a .vtt transcript to a cleaned up transcript in markdown format run:
+- To just convert a VTT transcript to a cleaned up transcript in Markdown format run:
 
 `python minervasmemo.py -i "sample.vtt" --mode convert`
 

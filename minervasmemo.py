@@ -1,6 +1,6 @@
 import argparse
 from converter import vtt_to_md
-from summarizer import generate_summary
+from summarizer_map import generate_summary
 from splitter import split_transcript
 
 def main():

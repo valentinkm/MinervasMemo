@@ -9,6 +9,8 @@ def main():
 
     parser.add_argument("-o", "--output", help="Base path to the output file(s)")
     parser.add_argument("--mode", choices=['convert', 'summarize'], default='convert', help="Operation mode")
+    parser.add_argument("--team_name", help="What team is having the meeting?", default="Formal Methods Group of the Max Planck Institute for Human Development Berlin (MPIB)")
+    parser.add_argument("--team_members", help="Who is having the conversation?", default="Aaron Peikert, Andreas Brandmaier, Hannes Diemerling, Leonie Hagitte, Maximilian Ernst, Moritz Ketzer, Nicklas Hafiz, Ulman Lindenberger, Valentin Kriegmair")
 
     args = parser.parse_args()
 
@@ -27,16 +29,22 @@ def main():
         docs = split_transcript(raw_md)
         
         # Unpack the tuple returned by generate_summary
-        summary_md, token_info = generate_summary(docs)
+        final_summary, token_info_map1, token_info_map2, token_info_bullet, aggregated_token_info = generate_summary(docs, args.team_name, args.team_members)
+
         
         summary_output = f"{output_base}_summary.md"
         with open(summary_output, 'w') as file:
-            file.write(summary_md)
+            file.write(final_summary)
 
         token_info_output = f"{output_base}_token_info.txt"
         with open(token_info_output, 'w') as file:
-            for key, value in token_info.items():
-                file.write(f"{key}: {value}\n")
+            for section, token_info in {"First map-reduce": token_info_map1,
+                                        "Second map-reduce": token_info_map2,
+                                        "Final Summary": token_info_bullet,
+                                        "Aggregated Info": aggregated_token_info}.items():
+                file.write(f"--- {section} ---\n")
+                for key, value in token_info.items():
+                    file.write(f"{key}: {value}\n")
 
 if __name__ == "__main__":
     main()

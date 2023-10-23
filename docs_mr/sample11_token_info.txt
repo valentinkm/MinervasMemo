@@ -1,0 +1,18 @@
+--- First map-reduce ---
+Total Tokens: 7019
+Prompt Tokens: 5026
+Completion Tokens: 1993
+Total Cost (USD): 0.011525
+--- Second map-reduce ---
+Total Tokens: 0
+Prompt Tokens: 0
+Completion Tokens: 0
+Total Cost (USD): 0.0
+--- Final Summary ---
+Total Tokens: 998
+Prompt Tokens: 610
+Completion Tokens: 388
+Total Cost (USD): 0.04158
+--- Aggregated Info ---
+Total Tokens: 8017
+Total Cost (USD): 0.053105

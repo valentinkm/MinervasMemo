@@ -6,7 +6,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain.chains.llm import LLMChain
 from langchain.chains import SimpleSequentialChain
-from prompts import init_proompt, refine_prompt, bullet_prompt
+from refine_prompts import init_proompt, refine_prompt, bullet_prompt
 from langfuse.callback import CallbackHandler
 from langchain.callbacks import get_openai_callback
 

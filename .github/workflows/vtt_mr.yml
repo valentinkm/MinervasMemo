@@ -93,7 +93,7 @@ jobs:
 
       - name: Push new branch
         run: |
-          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/formal-methods-mpi/MinervasMemo.git
           git push origin feature/add-summary-${{ github.sha }}
 
       - name: Create Pull Request

@@ -58,7 +58,7 @@ def initialize_summarizer():
 
     
 
-def generate_summary(docs, team_name, team_members):
+def generate_summary_map(docs, team_name, team_members):
     global llm, llm_final, summary_chain1, summary_chain2, bullet_chain, handler
 
     print("Initializing the summarizer...")

@@ -43,7 +43,7 @@ def initialize_summarizer():
     overall_simple_chain = SimpleSequentialChain(chains=[refine_chain, bullet_chain], verbose=True)
     
 
-def generate_summary(docs):
+def generate_summary_refine(docs):
     global llm, refine_chain, bullet_chain, overall_simple_chain, handler
     
     if llm is None:

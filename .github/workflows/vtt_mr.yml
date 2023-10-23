@@ -1,0 +1,98 @@
+name: Process and Summarize VTT File
+
+on:
+  push:
+    paths:
+      - 'docs_mr/**/*.vtt'
+
+env:
+  PYTHON_VERSION: 3.x
+
+jobs:
+  process-vtt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set Environment Variables
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY_ME }}" >> $GITHUB_ENV
+          echo "PUBLIC_KEY=${{ secrets.PUBLIC_KEY }}" >> $GITHUB_ENV
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Debug Git Logs
+        run: |
+          git log -n 5 --pretty=format:"%h - %an, %ar : %s"
+
+      - name: Find changed VTT files
+        id: findfile
+        run: |
+          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs_mr/.*\.vtt')
+          echo "Changed VTT files: $files"
+          echo "::set-output name=files::$files"
+
+      - name: List files before running script
+        run: ls -l docs_mr/
+
+      - name: Run Minerva's Memo script for summarization
+        run: |
+          for file in ${{ steps.findfile.outputs.files }}; do
+            python minervasmemo.py -i "$file" --mode summarize
+          done
+
+      - name: Read token and cost information
+        id: read_info
+        run: |
+          model_info="Model: gpt-3.5-turbo"
+          token_info=$(cat docs_mr/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+          info="$model_info\\n$token_info"
+          echo "Token and Cost Info: $info"
+          echo "::set-output name=info::$info"
+
+      - name: Fetch latest main into a temporary branch
+        run: |
+          git fetch origin main:temp-main
+
+      - name: Checkout temporary main branch
+        run: |
+          git checkout temp-main
+
+      - name: Create and checkout new feature branch
+        run: |
+          git checkout -b feature/add-summary-${{ github.sha }}  # Create and checkout new feature branch
+
+      - name: Commit changes to new branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs_mr/*.md
+          git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
+
+      - name: Push new branch
+        run: |
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
+          git push origin feature/add-summary-${{ github.sha }}
+
+      - name: Create Pull Request
+        run: |
+          info="${{ steps.read_info.outputs.info }}"
+          info=$(echo -e "$info")
+          gh pr create --base main --head feature/add-summary-${{ github.sha }} \
+          --title "Add cleaned up transcript and summary" \
+          --body "$info" \
+          --reviewer ${{ github.actor }}

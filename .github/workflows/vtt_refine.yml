@@ -3,7 +3,7 @@ name: Process and Summarize VTT File
 on:
   push:
     paths:
-      - 'docs/**/*.vtt'
+      - 'docs_refine/**/*.vtt'
 
 env:
   PYTHON_VERSION: 3.x
@@ -42,24 +42,24 @@ jobs:
       - name: Find changed VTT files
         id: findfile
         run: |
-          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs/.*\.vtt')
+          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs_refine/.*\.vtt')
           echo "Changed VTT files: $files"
           echo "::set-output name=files::$files"
 
       - name: List files before running script
-        run: ls -l docs/
+        run: ls -l docs_refine/
 
       - name: Run Minerva's Memo script for summarization
         run: |
           for file in ${{ steps.findfile.outputs.files }}; do
-            python minervasmemo.py -i "$file" --mode summarize
+            python minervasmemo.py -i "$file" --mode summarize --method refine
           done
 
       - name: Read token and cost information
         id: read_info
         run: |
           model_info="Model: gpt-3.5-turbo"
-          token_info=$(cat docs/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+          token_info=$(cat docs_refine/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
           info="$model_info\\n$token_info"
           echo "Token and Cost Info: $info"
           echo "::set-output name=info::$info"
@@ -80,7 +80,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add docs/*.md
+          git add docs_refine/*.md
           git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
 
       - name: Push new branch

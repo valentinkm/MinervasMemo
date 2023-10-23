@@ -1,4 +1,4 @@
-name: Process and Summarize VTT File
+name: Process and Summarize VTT File - Refine
 
 on:
   push:
@@ -9,7 +9,7 @@ env:
   PYTHON_VERSION: 3.x
 
 jobs:
-  process-vtt:
+  process-vtt-refine:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

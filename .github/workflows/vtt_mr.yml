@@ -52,7 +52,7 @@ jobs:
         run: |
           files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs_mr/.*\.vtt')
           echo "Changed VTT files: $files"
-          echo "files::$files" >> $GITHUB_OUTPUT
+          echo "files=$files" >> $GITHUB_OUTPUT
 
       - name: List files before running script
         run: ls -l docs_mr/

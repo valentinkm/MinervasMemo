@@ -10,7 +10,7 @@ from langchain.chains.llm import LLMChain
 from langchain.chat_models import ChatOpenAI
 
 # Modules
-from map_reduce_prompts import map_prompt_template, combine_prompt_template, map_prompt_template2, combine_prompt_template2, bullet_prompt
+from map_reduce_prompts_minimal import map_prompt_template, combine_prompt_template, map_prompt_template2, combine_prompt_template2, bullet_prompt
 from tokenizer import encoding_gpt3, encoding_gpt4
 from splitter import r_splitter
 

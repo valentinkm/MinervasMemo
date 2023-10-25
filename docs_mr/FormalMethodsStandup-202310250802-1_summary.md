@@ -7,34 +7,28 @@ Markdown:
 - Aaron Peikert
 - Andreas Brandmaier
 - Max (Maximilian Ernst)
-- Naftali
-- Andres
-- Andrea
+- Leo
+- Valentin
+- Leonie
+- Xin
 
 ### Discussed
 
-- **Project Progress:**
+- **EquiTea: Academic Housekeeping Tasks:**
 
-    - Initial phase of requirements gathering completed.
-    - Moved onto design phase, brainstorming and creating prototypes.
-    - Emphasized considering all possible scenarios and addressing potential issues proactively.
-    - Upcoming project deadline mentioned.
-
-- **Academic Housekeeping Tasks:**
-
-    - Tasks, particularly those affecting women, acknowledged but not desired.
+    - Tasks that everyone agrees should be done, no one wants to do are most often done by womeen
     - No specific recommendations on how to address the bias, only the importance of being aware of it.
 
-- **Paper Issues and Junior Researchers' Pool:**
+- **Paper Issues**
 
-    - Need to contact Dr. Aaron Peikert to discuss junior researchers' pool and paper issue.
-    - Finalizing submission of another paper with some changes.
+    - Finalizing submission of another paper with some changes within the week.
     - Found an interesting idea in a paper that cited Andrea's approach to reliability.
 
 - **Literature Search Challenges:**
 
     - Discussed challenges of finding relevant literature through keyword searches.
     - Suggested techniques like snowballing and looking at citations.
+    - looking through all papers published by a particular journal is also suprisingly effective
     - Requested recommendations on how to be more efficient in finding the right literature.
 
 - **Terminology and Keyword Selection:**
@@ -54,10 +48,9 @@ Markdown:
 
 ### Action Items
 
-- Contact Dr. Aaron Peikert to discuss junior researchers' pool and paper issue.
 - Finalize submission of another paper with some changes.
 - Update Naftali's schedule.
-- Discuss the bias-variance problem with the group on Friday.
+- Discuss the bias-variance problem with the group sometime
 
 ### Side Comments
 

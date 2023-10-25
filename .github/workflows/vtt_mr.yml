@@ -50,20 +50,22 @@ jobs:
       - name: Find changed VTT files
         id: findfile
         run: |
-          files=$(git diff-tree --no-commit-id --name-only -r HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ':')
+          files=$(git diff-tree --no-commit-id --name-only -r HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' '\0')
           echo "Changed VTT files: $files"
-          echo "files=($files)" >> $GITHUB_OUTPUT
-
+          echo "files=$files" >> $GITHUB_OUTPUT
+      
       - name: List files before running script
         run: ls -l docs_mr/
-
+      
       - name: Run Minerva's Memo script for summarization
         run: |
-          IFS=":"
+          IFS=$'\0'  # Set IFS to null character
           read -ra files <<< "${{ steps.findfile.outputs.files }}"
           for file in "${files[@]}"; do
-            python minervasmemo.py -i "\"$file\"" --mode summarize
+            python minervasmemo.py -i "$file" --mode summarize
           done
+          unset IFS  # Reset the IFS
+      
 
       - name: Read token and cost information
         id: read_info

@@ -62,7 +62,7 @@ jobs:
           IFS=":"
           read -ra files <<< "${{ steps.findfile.outputs.files }}"
           for file in "${files[@]}"; do
-            python minervasmemo.py -i "$file" --mode summarize
+            python minervasmemo.py -i "\"$file\"" --mode summarize
           done
 
       - name: Read token and cost information

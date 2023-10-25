@@ -60,8 +60,8 @@ jobs:
       - name: Run Minerva's Memo script for summarization
         run: |
           IFS=":"
-          read -ra files <<< "${{ steps.findfile.outputs.files }};"
-          for file in "${file_array[@]}"; do
+          read -ra files <<< "${{ steps.findfile.outputs.files }}"
+          for file in "${files[@]}"; do
             python minervasmemo.py -i "$file" --mode summarize
           done
 

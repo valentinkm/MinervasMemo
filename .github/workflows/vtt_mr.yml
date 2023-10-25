@@ -50,7 +50,7 @@ jobs:
       - name: Find changed VTT files
         id: findfile
         run: |
-          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs_mr/.*\.vtt' | awk '{ print "\""$0"\""}')
+          files=$(git diff-tree --no-commit-id --name-only -r HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ':')
           echo "Changed VTT files: $files"
           echo "files=($files)" >> $GITHUB_OUTPUT
 
@@ -59,7 +59,9 @@ jobs:
 
       - name: Run Minerva's Memo script for summarization
         run: |
-          for file in ${{ steps.findfile.outputs.files }}; do
+          IFS=":"
+          read -ra files <<< "${{ steps.findfile.outputs.files }};"
+          for file in "${file_array[@]}"; do
             python minervasmemo.py -i "$file" --mode summarize
           done
 

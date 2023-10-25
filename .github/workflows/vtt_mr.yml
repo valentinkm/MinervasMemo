@@ -50,7 +50,7 @@ jobs:
       - name: Find changed VTT files
         id: findfile
         run: |
-          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs_mr/.*\.vtt')
+          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs_mr/.*\.vtt' | awk '{ print "\""$0"\""}')
           echo "Changed VTT files: $files"
           echo "files=$files" >> $GITHUB_OUTPUT
 

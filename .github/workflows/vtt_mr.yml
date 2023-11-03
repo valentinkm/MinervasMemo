@@ -1,15 +1,15 @@
-name: Process and Summarize VTT File
+name: Process and Summarize VTT File - Map Reduce
 
 on:
   push:
     paths:
-      - 'docs/**/*.vtt'
+      - 'docs_mr/**/*.vtt'
 
 env:
   PYTHON_VERSION: 3.x
 
 jobs:
-  process-vtt:
+  process-vtt-map-reduce:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
+          cache: 'pip'
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
 
@@ -30,10 +30,18 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY_ME }}" >> $GITHUB_ENV
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
           echo "PUBLIC_KEY=${{ secrets.PUBLIC_KEY }}" >> $GITHUB_ENV
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
           echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "OPENAI_API_BASE=https://zitopenai.openai.azure.com/" >> $GITHUB_ENV
+          echo "OPENAI_API_TYPE=azure" >> $GITHUB_ENV
+          echo "OPENAI_API_VERSION=2023-03-15-preview" >> $GITHUB_ENV
+          echo "OPENAI_MODEL_NAME_TURBO=gpt-35-turbo" >> $GITHUB_ENV
+          echo "OPENAI_MODEL_NAME_GPT4=gpt-4" >> $GITHUB_ENV
+          echo "OPENAI_EMBEDDING_DEPLOYMENT_NAME=text-embedding-ada-002" >> $GITHUB_ENV
+          echo "OPENAI_EMBEDDING_MODEL_NAME=text-embedding-ada-002" >> $GITHUB_ENV
+
 
       - name: Debug Git Logs
         run: |
@@ -42,35 +50,39 @@ jobs:
       - name: Find changed VTT files
         id: findfile
         run: |
-          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep 'docs/.*\.vtt')
+          files=$(git diff-tree --no-commit-id --name-only -r HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ':')
           echo "Changed VTT files: $files"
-          echo "::set-output name=files::$files"
+          echo "files=$files" >> $GITHUB_OUTPUT
 
       - name: List files before running script
-        run: ls -l docs/
+        run: ls -l docs_mr/
 
       - name: Run Minerva's Memo script for summarization
         run: |
-          for file in ${{ steps.findfile.outputs.files }}; do
+          IFS=":"  # Set IFS to colon
+          read -ra files <<< "${{ steps.findfile.outputs.files }}"
+          for file in "${files[@]}"; do
             python minervasmemo.py -i "$file" --mode summarize
           done
+          unset IFS  # Reset the IFS
+
 
       - name: Read token and cost information
         id: read_info
         run: |
           model_info="Model: gpt-3.5-turbo"
-          token_info=$(cat docs/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+          token_info=$(cat docs_mr/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
           info="$model_info\\n$token_info"
           echo "Token and Cost Info: $info"
           echo "::set-output name=info::$info"
 
-      - name: Fetch latest dev-test into a temporary branch
+      - name: Fetch latest main into a temporary branch
         run: |
-          git fetch origin dev-test:temp-dev-test
+          git fetch origin main:temp-main
 
-      - name: Checkout temporary dev-test branch
+      - name: Checkout temporary main branch
         run: |
-          git checkout temp-dev-test
+          git checkout temp-main
 
       - name: Create and checkout new feature branch
         run: |
@@ -80,19 +92,19 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add docs/*.md
+          git add docs_mr/*.md
           git commit -m "Add cleaned up transcript and summary as markdown" || echo "No changes to commit"
 
       - name: Push new branch
         run: |
-          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/valentinkm/MinervasMemo.git
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/formal-methods-mpi/MinervasMemo.git
           git push origin feature/add-summary-${{ github.sha }}
 
       - name: Create Pull Request
         run: |
           info="${{ steps.read_info.outputs.info }}"
           info=$(echo -e "$info")
-          gh pr create --base dev-test --head feature/add-summary-${{ github.sha }} \
+          gh pr create --base main --head feature/add-summary-${{ github.sha }} \
           --title "Add cleaned up transcript and summary" \
           --body "$info" \
           --reviewer ${{ github.actor }}

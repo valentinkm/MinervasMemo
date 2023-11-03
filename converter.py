@@ -1,4 +1,4 @@
-def vtt_to_md(transcript, output_path):
+def vtt_to_md(transcript, output_path, folder):
     """
     Convert a webttv meeting transcript .vtt file to a .md file and remove redundant information
 
@@ -8,9 +8,11 @@ def vtt_to_md(transcript, output_path):
     Returns:
     - raw_md (str): Path to the raw .md file of the meeting transcript
     """
-    if not transcript.startswith("docs/"):
-        transcript = f"docs/{transcript}"
     
+
+    if not (transcript.startswith("docs_mr/") or transcript.startswith("docs_refine/")):
+        transcript = f"{folder}/{transcript}"
+
     vtt_path = transcript
     
     print(f"Reading from {vtt_path}")  # Debugging line

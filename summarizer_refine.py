@@ -2,7 +2,7 @@
 # Setup
 import os
 from dotenv import load_dotenv
-from langchain.chat_models import AzureChatOpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain.chains.llm import LLMChain
 from langchain.chains import SimpleSequentialChain
@@ -28,11 +28,7 @@ def initialize_summarizer():
     
     handler = CallbackHandler(PUBLIC_KEY, SECRET_KEY)
     
-    llm = AzureChatOpenAI(request_timeout=30,
-                       model = "summarizer", 
-                       temperature=0.5, 
-                       deployment_name=os.getenv("OPENAI_MODEL_NAME_TURBO"),
-                       openai_api_key=os.getenv("OPENAI_API_KEY"))
+    llm = ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo")
 
     
     refine_chain = load_summarize_chain(

@@ -15,7 +15,8 @@ gh auth login --with-token <<< "$GH_TOKEN"
 
 # Change directory to the GitHub workspace where the code is checked out
 cd $GITHUB_WORKSPACE || exit
-
+pwd
+ls -alh
 # Fetch the latest main branch into a temporary branch
 git fetch origin main:temp-main
 
@@ -27,7 +28,7 @@ FEATURE_BRANCH="feature/add-summary-${GITHUB_SHA}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Find changed VTT files
-files=$(git diff --name-only HEAD $(git merge-base HEAD main) | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
+files=$(git diff --name-only HEAD~1 HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
 echo "Changed VTT files: $files"
 
 # List files before running script
@@ -39,6 +40,7 @@ chmod +x minervasmemo.py
 for file in $files; do
   python minervasmemo.py -i "$file" --mode summarize >> minervasmemo.log 2>&1
 done
+cat minervasmemo.log
 
 # Read token and cost information
 model_info="Model: gpt-3.5-turbo"

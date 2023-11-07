@@ -2,6 +2,11 @@
 # Use an official Python runtime as a parent image
 FROM python:3.11-slim
 
+# At the top of your Dockerfile:
+ARG GITHUB_WORKSPACE
+ENV GITHUB_WORKSPACE=${GITHUB_WORKSPACE}
+
+
 # Set the working directory in the container
 WORKDIR /usr/src/app
 

@@ -30,4 +30,4 @@ runs:
     PUBLIC_KEY: ${{ inputs.public-key }}
     SECRET_KEY: ${{ inputs.secret-key }}
   args:
-    - ${{ github.workspace }}
+    - "${{ github.workspace }}"

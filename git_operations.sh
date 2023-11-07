@@ -15,7 +15,7 @@ git config --global user.name "GitHub Action"
 gh auth login --with-token <<< "$GH_TOKEN"
 
 # Change directory to the GitHub workspace where the code is checked out
-cd "${GITHUB_WORKSPACE}" || exit
+cd $GITHUB_WORKSPACE || exit
 pwd
 ls -alh
 # Fetch the latest main branch into a temporary branch

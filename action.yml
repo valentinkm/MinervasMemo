@@ -1,3 +1,4 @@
+#action.yml
 name: 'Process and Summarize VTT Files'
 description: 'Processes VTT files and creates summaries using a Python script'
 
@@ -28,3 +29,5 @@ runs:
     GH_TOKEN: ${{ inputs.github-token }}
     PUBLIC_KEY: ${{ inputs.public-key }}
     SECRET_KEY: ${{ inputs.secret-key }}
+  args:
+    - ${{ github.workspace }}

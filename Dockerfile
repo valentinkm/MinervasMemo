@@ -18,7 +18,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your project's code into the container
-COPY . .
+COPY . /usr/src/app
 
 # Make port 80 available to the world outside this container
 EXPOSE 80
@@ -35,4 +35,6 @@ ENV PYTHON_VERSION=3.11
 
 RUN chmod +x /usr/src/app/git_operations.sh
 
-ENTRYPOINT ["/usr/src/app/git_operations.sh"]
+CMD ["/usr/src/app/git_operations.sh"]
+
+

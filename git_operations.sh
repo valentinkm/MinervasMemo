@@ -28,7 +28,7 @@ FEATURE_BRANCH="feature/add-summary-${GITHUB_SHA}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Find changed VTT files
-files=$(git diff --name-only HEAD~1 HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
+files=$(git diff --name-only origin/main...HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
 echo "Changed VTT files: $files"
 
 # List files before running script

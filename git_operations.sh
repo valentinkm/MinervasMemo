@@ -38,14 +38,18 @@ echo "Changed VTT files: $files"
 # List files before running script
 ls -l docs_mr/
 
+cd /usr/src/app
+
 #chmod +x minervasmemo.py
 
 # Run Minerva's Memo script for summarization on each VTT file
 for file in $files; do
   echo "Processing $file"
-  # Directly use the full path to the script and the input file
-  python /usr/src/app/minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
+  # No need to check if the script exists since we're in a controlled Docker environment
+  # Just directly call the script
+  python minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
 done
+
 ls -l docs_mr/
 cat minervasmemo.log
 

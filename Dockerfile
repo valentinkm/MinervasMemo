@@ -33,4 +33,6 @@ ENV OPENAI_EMBEDDING_DEPLOYMENT_NAME=text-embedding-ada-002
 ENV OPENAI_EMBEDDING_MODEL_NAME=text-embedding-ada-002
 ENV PYTHON_VERSION=3.11
 
+RUN chmod +x /usr/src/app/git_operations.sh
+
 ENTRYPOINT ["/usr/src/app/git_operations.sh"]

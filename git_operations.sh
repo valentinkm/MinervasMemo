@@ -6,6 +6,8 @@ if [ -z "$OPENAI_API_KEY" ] || [ -z "$GH_TOKEN" ] || [ -z "$PUBLIC_KEY" ] || [ -
   exit 1
 fi
 
+git config --global --add safe.directory /github/workspace
+
 # Configure Git and GitHub CLI
 git config --global user.email "action@github.com"
 git config --global user.name "GitHub Action"
@@ -31,9 +33,11 @@ echo "Changed VTT files: $files"
 # List files before running script
 ls -l docs_mr/
 
+chmod +x minervasmemo.py
+
 # Run Minerva's Memo script for summarization on each VTT file
 for file in $files; do
-  python minervasmemo.py -i "$file" --mode summarize
+  python minervasmemo.py -i "$file" --mode summarize >> minervasmemo.log 2>&1
 done
 
 # Read token and cost information

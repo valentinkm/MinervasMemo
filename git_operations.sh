@@ -1,4 +1,3 @@
-#git_operations.sh
 #!/bin/bash
 
 # Check if mandatory environment variables are set

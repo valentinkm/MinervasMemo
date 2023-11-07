@@ -14,9 +14,13 @@ git config --global user.name "GitHub Action"
 gh auth login --with-token <<< "$GH_TOKEN"
 
 # Change directory to the GitHub workspace where the code is checked out
+export PYTHONPATH="/usr/src/app:$PYTHONPATH"
+
 cd $GITHUB_WORKSPACE || exit
 pwd
+echo "Current directory: $(pwd)"
 ls -alh
+
 # Fetch the latest main branch into a temporary branch
 git fetch origin main:temp-main
 
@@ -34,10 +38,6 @@ echo "Changed VTT files: $files"
 # List files before running script
 ls -l docs_mr/
 
-cd /usr/src/app
-pwd
-ls -l
-
 chmod +x minervasmemo.py
 
 # Run Minerva's Memo script for summarization on each VTT file
@@ -45,7 +45,7 @@ for file in $files; do
   # Check if the script file exists
   if [ -f "minervasmemo.py" ]; then
     echo "Processing $file"
-    python minervasmemo.py -i "$file" --mode summarize >> minervasmemo.log 2>&1
+    python /usr/src/app/minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
   else
     echo "minervasmemo.py not found, unable to process $file" >> minervasmemo.log 2>&1
   fi

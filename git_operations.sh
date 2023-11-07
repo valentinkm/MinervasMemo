@@ -42,13 +42,9 @@ ls -l docs_mr/
 
 # Run Minerva's Memo script for summarization on each VTT file
 for file in $files; do
-  # Check if the script file exists
-  if [ -f "minervasmemo.py" ]; then
-    echo "Processing $file"
-    python /usr/src/app/minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
-  else
-    echo "minervasmemo.py not found, unable to process $file" >> minervasmemo.log 2>&1
-  fi
+  echo "Processing $file"
+  # Directly use the full path to the script and the input file
+  python /usr/src/app/minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
 done
 ls -l docs_mr/
 cat minervasmemo.log

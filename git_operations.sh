@@ -38,7 +38,7 @@ echo "Changed VTT files: $files"
 # List files before running script
 ls -l docs_mr/
 
-chmod +x minervasmemo.py
+#chmod +x minervasmemo.py
 
 # Run Minerva's Memo script for summarization on each VTT file
 for file in $files; do

@@ -18,9 +18,23 @@ COPY requirements.txt ./
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your project's code into the container
-COPY . /usr/src/app
+# Copy your Python scripts into the container
+COPY converter.py .
+COPY map_reduce_prompts.py .
+COPY minervasmemo.py .
+COPY refine_prompts.py .
+COPY splitter.py .
+COPY summarizer_map.py .
+COPY summarizer_refine.py .
+COPY test_summary.py .
+COPY tokenizer.py .
 
+# Copy other necessary files such as your shell script and action file
+COPY git_operations.sh .
+COPY action.yml .
+
+# Ensure your shell script is executable
+RUN chmod +x git_operations.sh
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
@@ -33,8 +47,6 @@ ENV OPENAI_MODEL_NAME_GPT4=gpt-4
 ENV OPENAI_EMBEDDING_DEPLOYMENT_NAME=text-embedding-ada-002
 ENV OPENAI_EMBEDDING_MODEL_NAME=text-embedding-ada-002
 ENV PYTHON_VERSION=3.11
-
-RUN chmod +x /usr/src/app/git_operations.sh
 
 CMD ["/usr/src/app/git_operations.sh"]
 

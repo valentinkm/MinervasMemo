@@ -34,6 +34,7 @@ echo "Changed VTT files: $files"
 # List files before running script
 ls -l docs_mr/
 
+cd /usr/src/app
 pwd
 ls -l
 

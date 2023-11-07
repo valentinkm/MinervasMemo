@@ -36,6 +36,7 @@ ls -l docs_mr/
 
 pwd
 ls -l
+
 chmod +x minervasmemo.py
 
 # Run Minerva's Memo script for summarization on each VTT file

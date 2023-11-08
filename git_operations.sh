@@ -50,6 +50,8 @@ for file in $files; do
   python minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
 done
 
+cat minervasmemo.log # Print the log file of minervasmemo.py
+
 mv *summary*.md /github/workspace/docs_mr/
 mv *token_info.txt /github/workspace/
 
@@ -68,8 +70,6 @@ git checkout temp-main
 # Create and checkout a new branch for the feature
 FEATURE_BRANCH="feature/add-summary-${GITHUB_SHA}"
 git checkout -b "$FEATURE_BRANCH"
-
-cat minervasmemo.log
 
 # Read token and cost information
 model_info="Model: gpt-3.5-turbo"

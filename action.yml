@@ -29,5 +29,3 @@ runs:
     GH_TOKEN: ${{ inputs.github-token }}
     PUBLIC_KEY: ${{ inputs.public-key }}
     SECRET_KEY: ${{ inputs.secret-key }}
-  args:
-    - /github/workspace:/github/workspace

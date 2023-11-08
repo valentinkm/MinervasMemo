@@ -20,16 +20,7 @@ cd $GITHUB_WORKSPACE || exit
 pwd
 echo "Current directory: $(pwd)"
 ls -alh
-
-# Fetch the latest main branch into a temporary branch
-git fetch origin main:temp-main
-
-# Checkout the temporary main branch
-git checkout temp-main
-
-# Create and checkout a new branch for the feature
-FEATURE_BRANCH="feature/add-summary-${GITHUB_SHA}"
-git checkout -b "$FEATURE_BRANCH"
+ls -l
 
 # Find changed VTT files
 files=$(git diff --name-only origin/main...HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
@@ -49,7 +40,25 @@ for file in $files; do
   python minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
 done
 
-ls -l docs_mr/
+mv *summary*.md /github/workspace/docs_mr/
+mv *token_info.txt /github/workspace/
+
+cd $GITHUB_WORKSPACE || exit
+pwd
+echo "Current directory: $(pwd)"
+ls -alh
+ls -l
+
+# Fetch the latest main branch into a temporary branch
+git fetch origin main:temp-main
+
+# Checkout the temporary main branch
+git checkout temp-main
+
+# Create and checkout a new branch for the feature
+FEATURE_BRANCH="feature/add-summary-${GITHUB_SHA}"
+git checkout -b "$FEATURE_BRANCH"
+
 cat minervasmemo.log
 
 # Read token and cost information

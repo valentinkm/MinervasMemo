@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Starting git_operations.sh script"
+
 
 # Check if mandatory environment variables are set
 if [ -z "$OPENAI_API_KEY" ] || [ -z "$GH_TOKEN" ] || [ -z "$PUBLIC_KEY" ] || [ -z "$SECRET_KEY" ]; then
@@ -20,9 +22,14 @@ cd $GITHUB_WORKSPACE || exit
 pwd
 echo "Current directory: $(pwd)"
 ls -alh
-ls -l
 
-# Find changed VTT files
+echo "Contents of docs_mr/ directory:"
+ls -alh docs_mr/
+
+echo "The current branch is:"
+git branch
+
+echo "Checking for changed VTT files..."
 files=$(git diff --name-only origin/main...HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
 echo "Changed VTT files: $files"
 

@@ -35,10 +35,9 @@ git checkout -b "$FEATURE_BRANCH"
 files=$(git diff --name-only origin/main...HEAD | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
 echo "Changed VTT files: $files"
 
-# List files before running script
-ls -l docs_mr/
-
 cd /usr/src/app
+# list files in the current directory
+ls -l
 
 #chmod +x minervasmemo.py
 

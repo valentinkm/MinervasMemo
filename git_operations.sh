@@ -29,9 +29,11 @@ ls -alh docs_mr/
 echo "The current branch is:"
 git branch
 
-echo "Checking for changed VTT files with sha..."
-# Assuming GITHUB_SHA contains the SHA of the commit that triggered the action
-files=$(git diff --name-only $GITHUB_SHA^! | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
+echo "GITHUB_REF: ${GITHUB_REF}"
+echo "GITHUB_SHA: ${GITHUB_SHA}"
+
+echo "Checking for changed VTT files with SHA..."
+files=$(git diff --name-only "${GITHUB_SHA}^" "${GITHUB_SHA}" | grep 'docs_mr/.*\.vtt' | tr '\n' ' ')
 echo "Changed VTT files: $files"
 
 cd /usr/src/app

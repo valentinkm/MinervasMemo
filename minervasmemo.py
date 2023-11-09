@@ -25,7 +25,8 @@ def main():
                         os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_refine/')]
     folder = None
     for pf in possible_folders:
-        if os.path.exists(f"{pf}{args.input}"):
+        file_path = os.path.join(pf, args.input) if not os.path.isabs(args.input) else args.input
+        if os.path.exists(file_path):
             folder = pf
             break
 

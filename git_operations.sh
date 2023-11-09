@@ -43,11 +43,10 @@ ls -l
 #chmod +x minervasmemo.py
 
 # Run Minerva's Memo script for summarization on each VTT file
+# New snippet that uses the $file variable that already contains the 'docs_mr/' path.
 for file in $files; do
   echo "Processing $file"
-  # No need to check if the script exists since we're in a controlled Docker environment
-  # Just directly call the script
-  python minervasmemo.py -i "/github/workspace/docs_mr/$file" --mode summarize >> minervasmemo.log 2>&1
+  python minervasmemo.py -i "/github/workspace/$file" --mode summarize >> minervasmemo.log 2>&1
 done
 
 cat minervasmemo.log # Print the log file of minervasmemo.py

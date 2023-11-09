@@ -57,7 +57,7 @@ def initialize_summarizer():
     
     bullet_chain = LLMChain(llm=llm_final, prompt=bullet_prompt, output_key="bullet-summary")
 
-    
+from splitter import load_transcript
 
 def generate_summary_map(docs, team_name, team_members):
     global llm, llm_final, summary_chain1, summary_chain2, bullet_chain, handler
@@ -72,6 +72,12 @@ def generate_summary_map(docs, team_name, team_members):
     token_info_map2 = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
     token_info_bullet = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
     aggregated_token_info = {'Total Tokens': 0, 'Total Cost (USD)': 0.0} 
+
+    token_count_in = len(encoding_gpt4.encode(load_transcript(docs)))
+
+    if token_count_in < 4000:
+        print("Token count is less than 4000. Running {}...")
+        
 
     # Run first summary chain
     print("Running a first map reduce chain...")

@@ -39,11 +39,11 @@ RUN chmod +x git_operations.sh
 EXPOSE 80
 
 # Define environment variable
-ENV OPENAI_API_BASE=https://zitopenai.openai.azure.com/
-ENV OPENAI_API_TYPE=azure
-ENV OPENAI_API_VERSION=2023-03-15-preview
+# ENV OPENAI_API_BASE=https://zitopenai.openai.azure.com/
+# ENV OPENAI_API_TYPE=azure
+# ENV OPENAI_API_VERSION=2023-03-15-preview
 ENV OPENAI_MODEL_NAME_TURBO=gpt-35-turbo
-ENV OPENAI_MODEL_NAME_GPT4=gpt-4
+ENV OPENAI_MODEL_NAME_GPT4=gpt-4-1106-preview
 ENV OPENAI_EMBEDDING_DEPLOYMENT_NAME=text-embedding-ada-002
 ENV OPENAI_EMBEDDING_MODEL_NAME=text-embedding-ada-002
 ENV PYTHON_VERSION=3.11

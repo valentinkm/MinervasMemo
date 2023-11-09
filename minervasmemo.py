@@ -20,9 +20,7 @@ def main():
     args = parser.parse_args()
 
     # Determine the folder based on the input file's location
-    possible_folders = [os.getenv('GITHUB_WORKSPACE'), 
-                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_mr/'), 
-                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_refine/')]
+    possible_folders = ["", "docs_mr/", "docs_refine/"]
     folder = None
     for pf in possible_folders:
         file_path = os.path.join(pf, args.input) if not os.path.isabs(args.input) else args.input
@@ -40,22 +38,22 @@ def main():
 
     if args.mode == 'convert':
         # Convert the .vtt file to a .md file
-        convert_output = os.path.join(folder, f"{output_base}_transcript.md")
+        convert_output = f"{output_base}_transcript.md"
         vtt_to_md(args.input, convert_output, folder)
 
     elif args.mode == 'summarize':
-        convert_output = os.path.join(folder, f"{output_base}_transcript.md")
+        convert_output = f"{output_base}_transcript.md"
         raw_md = vtt_to_md(transcript=args.input, output_path=convert_output, folder=folder)
         docs = split_transcript(raw_md)
         
         if args.method == 'map-reduce':
             final_summary, token_info_map1, token_info_map2, token_info_bullet, aggregated_token_info = generate_summary_map(docs, args.team_name, args.team_members)
         
-            summary_output = f"{folder}/{output_base}_summary.md"
+            summary_output = f"{output_base}_summary.md"
             with open(summary_output, 'w') as file:
                 file.write(final_summary)
 
-            token_info_output = f"{folder}/{output_base}_token_info.txt"
+            token_info_output = f"{output_base}_token_info.txt"
             with open(token_info_output, 'w') as file:
                 for section, token_info in {"First map-reduce": token_info_map1,
                                             "Second map-reduce": token_info_map2,
@@ -68,11 +66,11 @@ def main():
         elif args.method == 'refine':
             summary_md, token_info = generate_summary_refine(docs)
 
-            summary_output = f"{folder}/{output_base}_summary.md"
+            summary_output = f"{output_base}_summary.md"
             with open(summary_output, 'w') as file:
                 file.write(summary_md)
 
-            token_info_output = f"{folder}/{output_base}_token_info.txt"
+            token_info_output = f"{output_base}_token_info.txt"
             with open(token_info_output, 'w') as file:
                 for key, value in token_info.items():
                     file.write(f"{key}: {value}\n")

@@ -2,12 +2,12 @@
 # Libraries
 import os
 from dotenv import load_dotenv
-from langchain.chat_models import AzureChatOpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain.chains.llm import LLMChain
 from langfuse.callback import CallbackHandler
 from langchain.callbacks import get_openai_callback
 from langchain.chains.llm import LLMChain
+from langchain.chat_models import ChatOpenAI
 
 # Modules
 from map_reduce_prompts import map_prompt_template, combine_prompt_template, map_prompt_template2, combine_prompt_template2, bullet_prompt
@@ -32,17 +32,10 @@ def initialize_summarizer():
     
     handler = CallbackHandler(PUBLIC_KEY, SECRET_KEY)
     
-    llm = AzureChatOpenAI(request_timeout=30,
-                       model = "summarizer", 
-                       temperature=0.5, 
-                       deployment_name=os.getenv("OPENAI_MODEL_NAME_TURBO"),
-                       openai_api_key=os.getenv("OPENAI_API_KEY"))
+    llm = ChatOpenAI(temperature=0.7, model_name="gpt-3.5-turbo")
+    
+    llm_final = ChatOpenAI(temperature=0.7, model_name="gpt-3.5-turbo")
 
-    llm_final = AzureChatOpenAI(request_timeout=30,
-                       model = "summarizer", 
-                       temperature=0.5, 
-                       deployment_name=os.getenv("OPENAI_MODEL_NAME_GPT4"),
-                       openai_api_key=os.getenv("OPENAI_API_KEY"))
     
     summary_chain1 = load_summarize_chain (
         llm=llm,

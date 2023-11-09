@@ -8,11 +8,6 @@ def vtt_to_md(transcript, output_path, folder):
     Returns:
     - raw_md (str): Path to the raw .md file of the meeting transcript
     """
-    
-
-    if not (transcript.startswith("docs_mr/") or transcript.startswith("docs_refine/")):
-        transcript = f"{folder}/{transcript}"
-
     vtt_path = transcript
     
     print(f"Reading from {vtt_path}")  # Debugging line

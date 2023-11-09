@@ -40,11 +40,11 @@ def main():
 
     if args.mode == 'convert':
         # Convert the .vtt file to a .md file
-        convert_output = f"{folder}/{output_base}_transcript.md"
+        convert_output = os.path.join(folder, f"{output_base}_transcript.md")
         vtt_to_md(args.input, convert_output, folder)
 
     elif args.mode == 'summarize':
-        convert_output = f"{folder}/{output_base}_transcript.md"
+        convert_output = os.path.join(folder, f"{output_base}_transcript.md")
         raw_md = vtt_to_md(transcript=args.input, output_path=convert_output, folder=folder)
         docs = split_transcript(raw_md)
         

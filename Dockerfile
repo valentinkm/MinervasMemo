@@ -18,9 +18,9 @@ COPY requirements.txt ./
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy your Python scripts into the container
+# copy source code into container
 COPY converter.py .
-COPY map_reduce_prompts.py .
+COPY map_reduce_prompts_minimal.py .
 COPY minervasmemo.py .
 COPY refine_prompts.py .
 COPY splitter.py .
@@ -29,12 +29,13 @@ COPY summarizer_refine.py .
 COPY test_summary.py .
 COPY tokenizer.py .
 
-# Copy other necessary files such as your shell script and action file
+# copy shell script and action file
 COPY git_operations.sh .
 COPY action.yml .
 
-# Ensure your shell script is executable
+# ensure shell script is executable
 RUN chmod +x git_operations.sh
+
 # Make port 80 available to the world outside this container
 EXPOSE 80
 

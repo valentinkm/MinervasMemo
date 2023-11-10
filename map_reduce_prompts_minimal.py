@@ -71,9 +71,7 @@ bullet_prompt = ChatPromptTemplate.from_template(
     ### Side Comments <if any were made>'"
 )
 
-# a new prompt template for a gpt4 prompt that taks a whole transcript as one as input
-# and outputs a summary of the transcript
-all_in_one_prompt_template = ChatPromptTemplate.from_template(
+all_in_one_prompt = ChatPromptTemplate.from_template(
     """You are an excellent executive assistant.\n
     You are given an automated meeting transcript with transcription error due to autmoatic voice recognition, please ignore those.\n
     Your task is to compress them as much as possible without loosing too much meaning.\n

@@ -1,5 +1,6 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import UnstructuredMarkdownLoader
+import tiktoken
 
 # Recursive splitting to consider different separators in generic text
 r_splitter = RecursiveCharacterTextSplitter(

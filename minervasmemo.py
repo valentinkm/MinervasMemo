@@ -1,7 +1,9 @@
+#minervasmemo.py
 import argparse
 from converter import vtt_to_md
 from summarizer_map import generate_summary_map
-from splitter import split_transcript
+from splitter import split_transcript 
+from tokenizer import count_transcript_tokens
 import os
 
 from summarizer_refine import generate_summary_refine
@@ -12,8 +14,6 @@ def main():
 
     parser.add_argument("-o", "--output", help="Base path to the output file(s)")
     parser.add_argument("--mode", choices=['convert', 'summarize'], default='convert', help="Operation mode")
-    parser.add_argument("--team_name", help="What team is having the meeting?", default="Formal Methods Group of the Max Planck Institute for Human Development Berlin (MPIB)")
-    parser.add_argument("--team_members", help="Who is having the conversation?", default="Aaron Peikert, Andreas Brandmaier, Hannes Diemerling, Leonie Hagitte, Maximilian Ernst, Moritz Ketzer, Nicklas Hafiz, Ulman Lindenberger, Valentin Kriegmair")
     parser.add_argument("--method", choices=['refine', 'map-reduce'], default='map-reduce', help="Method for summarization")
 
 
@@ -45,9 +45,10 @@ def main():
         convert_output = f"{output_base}_transcript.md"
         raw_md = vtt_to_md(transcript=args.input, output_path=convert_output, folder=folder)
         docs = split_transcript(raw_md)
+        token_count_transcript = count_transcript_tokens(raw_md)
         
         if args.method == 'map-reduce':
-            final_summary, token_info_map1, token_info_map2, token_info_bullet, aggregated_token_info = generate_summary_map(docs, args.team_name, args.team_members)
+            final_summary, token_info_map1, token_info_map2, token_info_bullet, aggregated_token_info = generate_summary_map(docs, token_count_transcript)
         
             summary_output = f"{output_base}_summary.md"
             with open(summary_output, 'w') as file:

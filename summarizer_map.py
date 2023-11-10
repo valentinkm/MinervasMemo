@@ -1,4 +1,4 @@
-# Purpose: To summarize the meeting transcript
+# Summarizer_map.py
 # Libraries
 import os
 from dotenv import load_dotenv
@@ -62,7 +62,7 @@ def initialize_summarizer():
     bullet_chain = LLMChain(llm=llm_final, prompt=bullet_prompt, output_key="bullet-summary")
     all_in_one_chain = LLMChain(llm=llm_zero_shot, prompt=all_in_one_prompt, output_key="zero-shot-summary")
 
-def generate_summary_map(docs, team_name, team_members):
+def generate_summary_map(docs, token_count_transcript):
     global llm, llm_final, summary_chain1, summary_chain2, bullet_chain, handler, all_in_one_chain
 
     print("Initializing the summarizer...")
@@ -76,10 +76,7 @@ def generate_summary_map(docs, team_name, team_members):
     token_info_bullet = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
     aggregated_token_info = {'Total Tokens': 0, 'Total Cost (USD)': 0.0} 
 
-    #TEST
-    token_count_in = 3000
-
-    if token_count_in < 4000:
+    if token_count_transcript < 4000:
         print("Token count is less than 4000. Running single-prompt summary...")
         with get_openai_callback() as cb:
             result = all_in_one_chain(docs)
@@ -135,7 +132,7 @@ def generate_summary_map(docs, team_name, team_members):
             final_summary = first_summary
         print("Generating final summary...")
         with get_openai_callback() as cb:
-            final_summary = bullet_chain.run(summary = final_summary, team_name = team_name, team_members = team_members, callbacks=[handler])
+            final_summary = bullet_chain.run(summary = final_summary,callbacks=[handler])
             
             token_info_bullet['Total Tokens'] = cb.total_tokens
             token_info_bullet['Prompt Tokens'] = cb.prompt_tokens

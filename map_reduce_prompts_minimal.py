@@ -17,7 +17,7 @@ map_prompt_template = PromptTemplate (
 reduce_template = """You are an excellent executive assistant. The following is one of a set of excerpts from a meeting transcripts of a recent hybrid meeting: \n
 Excerpt:`{text}`\n
 Take these and in a stepwise manner condense the transcript text in one coherent document but WITHOUT loosing ANY meaning allowing for information-loss-free reconstruction of the original transcript. \n
-Thus step by step distill a condensed but information rich, complete and cohesive summary for optimal information retrieval. \n
+Thus step by step distill a comprehensive and cohesive summary of the meeting. \n
 Meeting Summary:"""
 # reduce_prompt = PromptTemplate.from_template(reduce_template)
 combine_prompt_template = PromptTemplate(
@@ -50,44 +50,18 @@ combine_prompt_template2 = PromptTemplate(
 )
 
 bullet_prompt = ChatPromptTemplate.from_template(
-    "You are an excellent executive assistant.\
-    Your task is to create a detailed bulleted summary of the following meeting notes lossing as little meaning as possible.\
-    Please format your response as markdown code. Highlight dates and agreed upon actions. \
-    Summary: {summary}\
-    Format: \
-    '## Meeting Summary \
-    ### Participants\
-    ### Discussed\
-    - **<Agenda Item 1>:**\
-        - point 1\
-        - point 2\
-        - ...\
-    - **<Agenda Item 2>:**\
-        - point 1\
-        - point 2\
-        - ...\
-    ### Action Items\
-    - <a-list-of-follow-up-actions-with-owner-names>\
-    ### Side Comments <if any were made>'"
+    """You are an excellent executive assistant.\n
+    You are given an machine-generated transcript of a hybrid video conference.
+    Your task is to create a well structured concise summary in Markdown format.\n
+    The transcription may contain errors due to autmoatic voice recognition, please ignore those.\n
+    Prioritize clarity and accuracy and highlight decisions, action items and dates.\n
+    Summary: {summary}"""
 )
 
 all_in_one_prompt = ChatPromptTemplate.from_template(
     """You are an excellent executive assistant.\n
-    You are given an automated meeting transcript with transcription error due to autmoatic voice recognition, please ignore those.\n
-    Your task is to compress them as much as possible without loosing too much meaning.\n
-    Transcript: {docs}\n
-    Format your output in Markdown in the following way:
-    '## Meeting Summary \
-    ### Participants\
-    ### Discussed\
-    - **<Agenda Item 1>:**\
-        - point 1\
-        - point 2\
-        - ...\
-    - **<Agenda Item 2>:**\
-        - point 1\
-        - point 2\
-        - ...\
-    ### Action Items\
-    - <a-list-of-follow-up-actions-with-owner-names>\
-    ### Side Comments <if any were made>'\n""")
+    You are given an machine-generated transcript of a hybrid video conference.
+    Your task is to create a well structured concise summary in Markdown format.\n
+    The transcription may contain errors due to autmoatic voice recognition, please ignore those.\n
+    Prioritize clarity and accuracy and highlight decisions, action items and dates.\n
+    Transcript: {docs}\n""")

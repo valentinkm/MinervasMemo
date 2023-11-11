@@ -26,7 +26,6 @@ COPY refine_prompts.py .
 COPY splitter.py .
 COPY summarizer_map.py .
 COPY summarizer_refine.py .
-COPY test_summary.py .
 COPY tokenizer.py .
 
 # copy shell script and action file

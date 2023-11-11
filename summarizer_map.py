@@ -146,6 +146,5 @@ def generate_summary_map(docs, token_count_transcript):
         print(f"Bullet summary complete. Used {token_info_final['Total Tokens']} tokens.")
         print(f"Total tokens used: {token_info_map1['Total Tokens'] + token_info_map2['Total Tokens'] + token_info_final['Total Tokens']}")
         print(f"Total estimated cost: {token_info_map1['Total Cost (USD)'] + token_info_map2['Total Cost (USD)'] + token_info_final['Total Cost (USD)']}$")
-        totaltoken_info = [token_info_map1, token_info_map2, token_info_final, aggregated_token_info]
 
-    return final_summary, totaltoken_info
+    return final_summary, aggregated_token_info

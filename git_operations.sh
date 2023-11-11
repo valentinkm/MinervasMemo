@@ -71,7 +71,6 @@ FEATURE_BRANCH="add-summary-$files-${GITHUB_SHA}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Read token and cost information
-model_info="Model: gpt-3.5-turbo"
 token_info=$(cat docs_mr/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
 info="$model_info\\n$token_info"
 echo "Token and Cost Info: $info"

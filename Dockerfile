@@ -8,9 +8,9 @@ WORKDIR /usr/src/app
 
 # Install GitHub CLI
 RUN apt-get update && \
-    apt-get install -y git && \
-    apt-get install -y gh && \
-    apt-get clean
+    apt-get install -y git gh jq && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements.txt file into the container at /usr/src/app
 COPY requirements.txt ./

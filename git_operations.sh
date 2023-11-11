@@ -67,7 +67,7 @@ git fetch origin main:temp-main
 git checkout temp-main
 
 # Create and checkout a new branch for the feature
-FEATURE_BRANCH="feature/add-summary-${GITHUB_SHA}"
+FEATURE_BRANCH="add-summary-$files-${GITHUB_SHA}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Read token and cost information

@@ -24,7 +24,7 @@ def main():
 
     possible_folders = [os.getenv('GITHUB_WORKSPACE'), 
                         os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_mr/'), 
-                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_refine/')]
+                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_refine/')] #for github actions
 
     folder = None
     for pf in possible_folders:
@@ -53,7 +53,7 @@ def main():
         token_count_transcript = count_transcript_tokens(raw_md)
         
         if args.method == 'map-reduce':
-            final_summary, token_info_map1, token_info_map2, token_info_final, aggregated_token_info = generate_summary_map(docs, token_count_transcript)
+            final_summary, totaltoken_info = generate_summary_map(docs, token_count_transcript)
         
             summary_output = f"{output_base}_summary.md"
             with open(summary_output, 'w') as file:
@@ -61,10 +61,7 @@ def main():
 
             token_info_output = f"{output_base}_token_info.txt"
             with open(token_info_output, 'w') as file:
-                for section, token_info in {"First map-reduce": token_info_map1,
-                                            "Second map-reduce": token_info_map2,
-                                            "Final Summary": token_info_final,
-                                            "Total Token Usage: {summary_output}": aggregated_token_info}.items():
+                for section, token_info in {"Total Token Usage: {summary_output}": totaltoken_info}.items():
                     file.write(f"--- {section} ---\n")
                     for key, value in token_info.items():
                         file.write(f"{key}: {value}\n")

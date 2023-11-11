@@ -73,7 +73,7 @@ def generate_summary_map(docs, token_count_transcript):
     # Initialize the token_info dictionaries with default values
     token_info_map1 = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
     token_info_map2 = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
-    token_info_bullet = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
+    token_info_final = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
     aggregated_token_info = {'Total Tokens': 0, 'Total Cost (USD)': 0.0} 
 
     if token_count_transcript < 4000:
@@ -82,10 +82,10 @@ def generate_summary_map(docs, token_count_transcript):
             result = all_in_one_chain(docs)
             final_summary = result['zero-shot-summary']
 
-            token_info_bullet['Total Tokens'] = cb.total_tokens
-            token_info_bullet['Prompt Tokens'] = cb.prompt_tokens
-            token_info_bullet['Completion Tokens'] = cb.completion_tokens
-            token_info_bullet['Total Cost (USD)'] = cb.total_cost
+            token_info_final['Total Tokens'] = cb.total_tokens
+            token_info_final['Prompt Tokens'] = cb.prompt_tokens
+            token_info_final['Completion Tokens'] = cb.completion_tokens
+            token_info_final['Total Cost (USD)'] = cb.total_cost
 
             # Update aggregated token info
             aggregated_token_info['Total Tokens'] += cb.total_tokens
@@ -134,17 +134,17 @@ def generate_summary_map(docs, token_count_transcript):
         with get_openai_callback() as cb:
             final_summary = bullet_chain.run(summary = final_summary,callbacks=[handler])
             
-            token_info_bullet['Total Tokens'] = cb.total_tokens
-            token_info_bullet['Prompt Tokens'] = cb.prompt_tokens
-            token_info_bullet['Completion Tokens'] = cb.completion_tokens
-            token_info_bullet['Total Cost (USD)'] = cb.total_cost
+            token_info_final['Total Tokens'] = cb.total_tokens
+            token_info_final['Prompt Tokens'] = cb.prompt_tokens
+            token_info_final['Completion Tokens'] = cb.completion_tokens
+            token_info_final['Total Cost (USD)'] = cb.total_cost
 
             # Update aggregated token info
             aggregated_token_info['Total Tokens'] += cb.total_tokens
             aggregated_token_info['Total Cost (USD)'] += cb.total_cost
 
-        print(f"Bullet summary complete. Used {token_info_bullet['Total Tokens']} tokens.")
-        print(f"Total tokens used: {token_info_map1['Total Tokens'] + token_info_map2['Total Tokens'] + token_info_bullet['Total Tokens']}")
-        print(f"Total estimated cost: {token_info_map1['Total Cost (USD)'] + token_info_map2['Total Cost (USD)'] + token_info_bullet['Total Cost (USD)']}$")
+        print(f"Bullet summary complete. Used {token_info_final['Total Tokens']} tokens.")
+        print(f"Total tokens used: {token_info_map1['Total Tokens'] + token_info_map2['Total Tokens'] + token_info_final['Total Tokens']}")
+        print(f"Total estimated cost: {token_info_map1['Total Cost (USD)'] + token_info_map2['Total Cost (USD)'] + token_info_final['Total Cost (USD)']}$")
 
-    return final_summary, token_info_map1, token_info_map2, token_info_bullet, aggregated_token_info
+    return final_summary, token_info_map1, token_info_map2, token_info_final, aggregated_token_info

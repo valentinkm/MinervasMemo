@@ -53,7 +53,7 @@ def main():
         token_count_transcript = count_transcript_tokens(raw_md)
         
         if args.method == 'map-reduce':
-            final_summary, token_info_map1, token_info_map2, token_info_bullet, aggregated_token_info = generate_summary_map(docs, token_count_transcript)
+            final_summary, token_info_map1, token_info_map2, token_info_final, aggregated_token_info = generate_summary_map(docs, token_count_transcript)
         
             summary_output = f"{output_base}_summary.md"
             with open(summary_output, 'w') as file:
@@ -63,7 +63,7 @@ def main():
             with open(token_info_output, 'w') as file:
                 for section, token_info in {"First map-reduce": token_info_map1,
                                             "Second map-reduce": token_info_map2,
-                                            "Final Summary": token_info_bullet,
+                                            "Final Summary": token_info_final,
                                             "Aggregated Info": aggregated_token_info}.items():
                     file.write(f"--- {section} ---\n")
                     for key, value in token_info.items():

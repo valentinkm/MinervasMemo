@@ -48,14 +48,17 @@ ls -l # sanity check for modules
 #chmod +x minervasmemo.py
 
 # Iterate over each changed VTT file, sanitize the file name, and process with minervasmemo.py
+sanitized_files=()
 for file in "${file_array[@]}"; do
     # Sanitize the file name
     sanitized_file=$(echo "$file" | sed 's/docs_mr\///' | sed 's/\.vtt//' | sed 's/[^a-zA-Z0-9]/-/g')
-    
+    sanitized_files+=("$sanitized_file")
+
     echo "Processing $sanitized_file"
     # Ensure to quote the path to handle spaces
     python minervasmemo.py -i "/github/workspace/docs_mr/$sanitized_file.vtt" --mode summarize >> minervasmemo.log 2>&1
 done
+
 
 cat minervasmemo.log # Print the log file of minervasmemo.py for debugging
 

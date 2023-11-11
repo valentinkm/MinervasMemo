@@ -64,7 +64,7 @@ def main():
                 for section, token_info in {"First map-reduce": token_info_map1,
                                             "Second map-reduce": token_info_map2,
                                             "Final Summary": token_info_final,
-                                            "Aggregated Info": aggregated_token_info}.items():
+                                            "Total Token Usage: {summary_output}": aggregated_token_info}.items():
                     file.write(f"--- {section} ---\n")
                     for key, value in token_info.items():
                         file.write(f"{key}: {value}\n")

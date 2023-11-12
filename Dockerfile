@@ -52,8 +52,6 @@ ENV OPENAI_GPT_ALL_IN_ONE=gpt-3.5-turbo
 # ENV OPENAI_GPT_ALL_IN_ONE=gpt-4
 # ENV OPENAI_GPT_ALL_IN_ONE=gpt-4-1106-preview
 
-
-
 ENV PYTHON_VERSION=3.11
 CMD ["/usr/src/app/git_operations.sh"]
 

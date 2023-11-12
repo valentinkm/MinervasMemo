@@ -51,12 +51,12 @@ ls -l # sanity check for modules
 sanitized_files=()
 for file in "${file_array[@]}"; do
     # Sanitize the file name
-    sanitized_file=$(echo "$file" | sed 's/docs_mr\///' | sed 's/\.vtt//' | sed 's/[^a-zA-Z0-9]/-/g')
+    sanitized_file=$(echo "$file" | sed 's/github/workspace/overview/meetings/webex_mapreduce\///' | sed 's/\.vtt//' | sed 's/[^a-zA-Z0-9]/-/g')
     sanitized_files+=("$sanitized_file")
 
     echo "Processing $sanitized_file"
     # Ensure to quote the path to handle spaces
-    python minervasmemo.py -i "/github/workspace/overview/meetings/webex_mapreduce/$sanitized_file.vtt" --mode summarize >> minervasmemo.log 2>&1
+    python minervasmemo.py -i "/github/workspace/overview/meetings/webex_mapreduce/$sanitized_file.vtt" --mode convert >> minervasmemo.log 2>&1
 done
 
 

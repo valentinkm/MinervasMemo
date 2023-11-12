@@ -17,29 +17,38 @@ from splitter import r_splitter
 # Initialization variables set to None
 llm = None
 llm_final = None
+llm_all_in_one = None
 summary_chain1 = None
 summary_chain2 = None
 bullet_chain = None
-zero_shot_chain = None
+all_in_one_chain = None
 handler = None
 
 def initialize_summarizer():
     global llm, llm_final, summary_chain1, summary_chain2, bullet_chain, handler, all_in_one_chain
     
-    load_dotenv()
-    
+    _=load_dotenv()
+    all_in_one_model_name = os.getenv('OPENAI_GPT_ALL_IN_ONE')
+    final_model_name = os.getenv('OPENAI_GPT_FINAL')
+    mapreduce_model_name = os.getenv('OPENAI_GPT_MAPREDUCE')
+
+    print("Initializing summarizer...")
+    print("all in one prompt model: ", all_in_one_model_name)
+    print("model for final prompt:", final_model_name)
+    print("map-reduce model:", mapreduce_model_name)
+
     PUBLIC_KEY = os.getenv('PUBLIC_KEY')
     SECRET_KEY = os.getenv('SECRET_KEY')
     
     handler = CallbackHandler(PUBLIC_KEY, SECRET_KEY)
     
     # get model name from environment variable:
+    
+    llm = ChatOpenAI(temperature=0.7, model_name =mapreduce_model_name)
+    
+    llm_final = ChatOpenAI(temperature=0.7, model_name =final_model_name)
 
-    llm = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT_MAP_REDUCE'))
-    
-    llm_final = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT_MAP_REDUCE'))
-    
-    llm_zero_shot = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT_ALL_IN_ONE'))
+    llm_all_in_one = ChatOpenAI(temperature=0.7, model_name =all_in_one_model_name)
 
     
     summary_chain1 = load_summarize_chain (
@@ -60,7 +69,7 @@ def initialize_summarizer():
     token_max=4000
     )
     bullet_chain = LLMChain(llm=llm_final, prompt=bullet_prompt, output_key="bullet-summary")
-    all_in_one_chain = LLMChain(llm=llm_zero_shot, prompt=all_in_one_prompt, output_key="zero-shot-summary")
+    all_in_one_chain = LLMChain(llm=llm_all_in_one, prompt=all_in_one_prompt, output_key="all-in-one-summary")
 
 def generate_summary_map(docs, token_count_transcript):
     global llm, llm_final, summary_chain1, summary_chain2, bullet_chain, handler, all_in_one_chain
@@ -80,7 +89,7 @@ def generate_summary_map(docs, token_count_transcript):
         print("Token count is less than 4000. Running single-prompt summary...")
         with get_openai_callback() as cb:
             result = all_in_one_chain(docs)
-            final_summary = result['zero-shot-summary']
+            final_summary = result['all-in-one-summary']
 
             token_info_final['Total Tokens'] = cb.total_tokens
             token_info_final['Prompt Tokens'] = cb.prompt_tokens

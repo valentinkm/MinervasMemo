@@ -41,8 +41,8 @@ def main():
     output_base = os.path.basename(args.input).replace(".vtt", "")
 
     # Base paths for output directories
-    transcript_output_dir = os.path.join(folder, 'transcripts')
-    summary_output_dir = os.path.join(folder, 'summaries')
+    transcript_output_dir = os.path.join(folder, 'overview/meetings/transcripts')
+    summary_output_dir = os.path.join(folder, 'overview/meetings/summaries')
     os.makedirs(transcript_output_dir, exist_ok=True)
     os.makedirs(summary_output_dir, exist_ok=True)
 

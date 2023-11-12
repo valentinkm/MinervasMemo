@@ -86,9 +86,11 @@ FEATURE_BRANCH="add-summary-${sanitized_files[0]}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Read token and cost information
-token_info=$(cat docs_mr/*_token_info.txt | tr '\n' ' ' | sed 's/Total Tokens:/\\nTotal Tokens:/g')
-info="$model_info\n$token_info"
-echo "Token and Cost Info: $info"
+token_info=$(cat docs_mr/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+info="$token_info"
+echo "Token and Cost Info:"
+echo -e "$info"
+
 
 # Commit changes and push to the new branch
 git add docs_mr/*.md

@@ -84,10 +84,10 @@ def generate_summary_map(docs, token_count_transcript):
     token_info_final = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
     aggregated_token_info = {'Total Tokens': 0, 'Total Cost (USD)': 0.0} 
 
-    if token_count_transcript < 4000:
-        print("Token count is less than 4000. Running single-prompt summary...")
+    if token_count_transcript < 10:
+        print("Token count is low. Running single-prompt summary...")
         with get_openai_callback() as cb:
-            result = all_in_one_chain(docs)
+            result = all_in_one_chain(docs, callbacks=[handler])
             final_summary = result['all-in-one-summary']
 
             token_info_final['Total Tokens'] = cb.total_tokens

@@ -54,11 +54,12 @@ bullet_prompt = ChatPromptTemplate.from_template(
     You are an excellent executive assistance. You are given a summary of a hybrid video conference:\n
     Create a well structured concise summary from this in Markdown format.\n
     Key Aspects to focus on in your summary are:\n
-    Clarity and Accuracy: Ensure the summary is clear and accurate, accounting for potential transcription errors.\n
-    Highlight Key Elements: Emphasize decisions, action items, and dates.\n
-    Organize Efficiently: Use structured sections in the summary.\n
-    Include one section containing all agreed upon decisions and action items.\n
-    Markdown Formatting: Present the summary in Markdown format for readability and reference.\n
+    - Clarity and Accuracy: Ensure the summary is clear and accurate, accounting for potential transcription errors.\n
+    - Highlight Key Elements: Emphasize decisions, action items, and dates.\n
+    - Organize Efficiently: Use structured sections in the summary.\n
+    - Include one section containing all agreed upon decisions and action items.\n
+    - Keep the summary concise and to the point for efficient future reference of key elements.\n
+    - Markdown Formatting: Present the summary in Markdown format for readability and reference.\n
     Summary: {summary}\n
     SUMMARY IN MARKDOWN:
     """
@@ -73,6 +74,7 @@ all_in_one_prompt = ChatPromptTemplate.from_template(
     Highlight Key Elements: Emphasize decisions, action items, and dates.\n
     Organize Efficiently: Use structured sections in the summary.\n 
     Include one section containing all agreed upon decisions and action items.\n
+    Keep the summary concise and to the point for efficient future reference of key elements.\n
     Markdown Formatting: Present the summary in Markdown format for readability and reference.\n
     Transcript: {docs}\n
     SUMMARY IN MARKDOWN:

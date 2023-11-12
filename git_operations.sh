@@ -50,12 +50,12 @@ ls -l # sanity check for modules
 # Iterate over each changed VTT file, sanitize the file name, and process with minervasmemo.py
 sanitized_files=()
 for file in "${file_array[@]}"; do
-    # Sanitize the entire file path to create a suitable branch name
-    sanitized_branch_part=$(echo "$file" | sed 's/[^a-zA-Z0-9]/-/g')
-    sanitized_files+=("$sanitized_branch_part")
+    # Extract just the filename without path
+    filename=$(basename "$file" | sed 's/\.vtt$//')
 
-    # Extract just the filename without path for processing
-    filename=$(basename "$file")
+    # Sanitize the filename to create a suitable branch name
+    sanitized_filename=$(echo "$filename" | sed 's/[^a-zA-Z0-9]/-/g')
+    sanitized_files+=("$sanitized_filename")
 
     echo "Processing $filename"
     # Ensure to use the full path for input, properly quoted to handle spaces
@@ -89,11 +89,10 @@ FEATURE_BRANCH="summarized-${sanitized_files[0]}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Read token and cost information
-token_info=$(cat overview/meetings/summaries/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+token_info=$(cat overview/meetings/summaries/*_token_info.txt)
 info="$token_info"
 echo "Token and Cost Info:"
-echo -e "$info"
-
+echo "$info"
 
 # Commit changes and push to the new branch
 git add overview/meetings/summaries/*.md
@@ -104,7 +103,7 @@ if git commit -m "Add cleaned up transcript and summary as markdown"; then
   
   # Create Pull Request with the GitHub CLI
   gh pr create --base main --head "$FEATURE_BRANCH" \
-    --title "Add cleaned up transcript and summary" \
+    --title "Add cleaned up transcript and summary of ${sanitized_files[0]}" \
     --body "$info" \
     --reviewer "$GITHUB_ACTOR"
 else

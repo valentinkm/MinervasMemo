@@ -63,8 +63,9 @@ done
 cat minervasmemo.log # Print the log file of minervasmemo.py for debugging
 
 # Move the cleaned up transcript and summary to docs_mr/ in the GitHub workspace
-mv *summary*.md /github/workspace/docs_mr/ 
-mv *token_info.txt /github/workspace/
+# can be removed
+# mv *summary*.md /github/workspace/docs_mr/ 
+# mv *token_info.txt /github/workspace/ 
 
 # Change directory to the GitHub workspace
 cd $GITHUB_WORKSPACE || exit
@@ -91,6 +92,7 @@ echo "Token and Cost Info: $info"
 
 # Commit changes and push to the new branch
 git add docs_mr/*.md
+git status
 if git commit -m "Add cleaned up transcript and summary as markdown"; then
   git push origin "$FEATURE_BRANCH"
   
@@ -98,7 +100,7 @@ if git commit -m "Add cleaned up transcript and summary as markdown"; then
   gh pr create --base main --head "$FEATURE_BRANCH" \
     --title "Add cleaned up transcript and summary" \
     --body "$info" \
-    --reviewer "$(gh api /repos/:owner/:repo/collaborators | jq -r '.[] | .login')"
+    --reviewer "$GITHUB_ACTOR"
 else
   echo "No changes to commit"
 fi

@@ -50,12 +50,16 @@ ls -l # sanity check for modules
 # Iterate over each changed VTT file, sanitize the file name, and process with minervasmemo.py
 sanitized_files=()
 for file in "${file_array[@]}"; do
-    # Extract just the filename without path
-    sanitized_file=$(basename "$file" | sed 's/\.vtt$//')
+    # Sanitize the entire file path to create a suitable branch name
+    sanitized_branch_part=$(echo "$file" | sed 's/[^a-zA-Z0-9]/-/g')
+    sanitized_files+=("$sanitized_branch_part")
 
-    echo "Processing $sanitized_file"
+    # Extract just the filename without path for processing
+    filename=$(basename "$file")
+
+    echo "Processing $filename"
     # Ensure to use the full path for input, properly quoted to handle spaces
-    python minervasmemo.py -i "$file" --mode summarize >> minervasmemo.log 2>&1
+    python minervasmemo.py -i "/github/workspace/$file" --mode summarize >> minervasmemo.log 2>&1
 done
 
 
@@ -81,7 +85,7 @@ git fetch origin main:temp-main
 git checkout temp-main
 
 # Create and checkout a new branch for the Pull Request named after the first file
-FEATURE_BRANCH="add-summary-${sanitized_files[0]}"
+FEATURE_BRANCH="summarized-${sanitized_files[0]}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Read token and cost information

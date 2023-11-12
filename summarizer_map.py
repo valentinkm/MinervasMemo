@@ -74,7 +74,6 @@ def initialize_summarizer():
 def generate_summary_map(docs, token_count_transcript):
     global llm, llm_final, summary_chain1, summary_chain2, bullet_chain, handler, all_in_one_chain
 
-    print("Initializing the summarizer...")
     if llm is None:
         initialize_summarizer()
     print("Summarizer initialized.")

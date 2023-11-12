@@ -38,16 +38,21 @@ def main():
         return
 
     # Set default output names based on the input file name
-    default_output_base = args.input.replace(".vtt", "")
-    output_base = args.output if args.output else default_output_base
+    output_base = os.path.basename(args.input).replace(".vtt", "")
+
+    # Base paths for output directories
+    transcript_output_dir = os.path.join(folder, 'transcripts')
+    summary_output_dir = os.path.join(folder, 'summaries')
+    os.makedirs(transcript_output_dir, exist_ok=True)
+    os.makedirs(summary_output_dir, exist_ok=True)
 
     if args.mode == 'convert':
         # Convert the .vtt file to a .md file
-        convert_output = f"{output_base}_transcript.md"
+        convert_output = os.path.join(transcript_output_dir, f"{output_base}_transcript.md")
         vtt_to_md(args.input, convert_output, folder)
 
     elif args.mode == 'summarize':
-        convert_output = f"{output_base}_transcript.md"
+        convert_output = os.path.join(transcript_output_dir, f"{output_base}_transcript.md")
         raw_md = vtt_to_md(transcript=args.input, output_path=convert_output, folder=folder)
         docs = split_transcript(raw_md)
         token_count_transcript = count_transcript_tokens(raw_md)
@@ -55,21 +60,22 @@ def main():
         if args.method == 'map-reduce':
             final_summary, aggregated_token_info = generate_summary_map(docs, token_count_transcript)
         
-            summary_output = f"{output_base}_summary.md"
+            summary_output = os.path.join(summary_output_dir, f"{output_base}_summary.md")
             with open(summary_output, 'w') as file:
                 file.write(final_summary)
 
-            token_info_output = f"{output_base}_token_info.txt"
+            token_info_output = os.path.join(summary_output_dir, f"{output_base}_token_info.txt")
             with open(token_info_output, 'w') as file:
                 for section, token_info in {f"Total Token Usage: {summary_output}:": aggregated_token_info}.items():
                     file.write(f"--- {section} ---\n")
                     for key, value in token_info.items():
                         file.write(f"{key}: {value}\n")
 
+        
         elif args.method == 'refine':
             summary_md, token_info = generate_summary_refine(docs)
 
-            summary_output = f"{output_base}_summary.md"
+            summary_output = f"{output_base}_summary.md" # This is not writing the files to the correct directory yet - need to fix
             with open(summary_output, 'w') as file:
                 file.write(summary_md)
 

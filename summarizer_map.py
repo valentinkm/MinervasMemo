@@ -35,11 +35,11 @@ def initialize_summarizer():
     
     # get model name from environment variable:
 
-    llm = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT35_TURBO'))
+    llm = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT_MAP_REDUCE'))
     
-    llm_final = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT35_TURBO'))
+    llm_final = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT_MAP_REDUCE'))
     
-    llm_zero_shot = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT35_TURBO'))
+    llm_zero_shot = ChatOpenAI(temperature=0.7, model_name=os.getenv('OPENAI_GPT_ALL_IN_ONE'))
 
     
     summary_chain1 = load_summarize_chain (

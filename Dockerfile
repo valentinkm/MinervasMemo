@@ -42,11 +42,19 @@ EXPOSE 80
 # ENV OPENAI_API_BASE=https://zitopenai.openai.azure.com/
 # ENV OPENAI_API_TYPE=azure
 # ENV OPENAI_API_VERSION=2023-03-15-preview
-ENV OPENAI_GPT35_TURBO=gpt-3.5-turbo
-ENV OPENAI_GPT4_TURBO=gpt-4-1106-preview
-ENV OPENAI_GPT4=gpt-4
-ENV PYTHON_VERSION=3.11
 
+# --- Models ---
+ENV OPENAI_GPT_MAP_REDUCE=gpt-3.5-turbo
+# ENV OPENAI_GPT_MAP_REDUCE=gpt-4
+# ENV OPENAI_GPT_MAP_REDUCE=gpt-4-1106-preview
+
+ENV OPENAI_GPT_ALL_IN_ONE=gpt-3.5-turbo
+# ENV OPENAI_GPT_ALL_IN_ONE=gpt-4
+# ENV OPENAI_GPT_ALL_IN_ONE=gpt-4-1106-preview
+
+
+
+ENV PYTHON_VERSION=3.11
 CMD ["/usr/src/app/git_operations.sh"]
 
 

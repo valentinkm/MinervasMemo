@@ -1,0 +1,31 @@
+#action.yml
+name: 'Process and Summarize VTT Files'
+description: 'Processes VTT files and creates summaries using a Python script'
+
+inputs:
+  github-token:
+    description: 'GitHub token for authentication'
+    required: true
+  openai-api-key:
+    description: 'OpenAI API key for AI operations'
+    required: true
+  public-key:
+    description: 'Public key for LangFuse'
+    required: true
+  secret-key:
+    description: 'Secret key for LangFuse'
+    required: true
+
+outputs:
+  summary-md-path:
+    description: 'The file path for the summarized markdown file'
+    # You might want to output this after the script runs, using `echo "::set-output name=summary-md-path::$PATH"`
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+    GH_TOKEN: ${{ inputs.github-token }}
+    PUBLIC_KEY: ${{ inputs.public-key }}
+    SECRET_KEY: ${{ inputs.secret-key }}

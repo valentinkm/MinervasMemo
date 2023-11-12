@@ -20,11 +20,11 @@ def main():
     args = parser.parse_args()
 
     # Determine the folder based on the input file's location
-    # possible_folders = ["", "docs_mr/", "docs_refine/"] # uncomment for local testing
+    # possible_folders = ["", "overview/meetings/webex_mapreduce/", "overview/meetings/webex_refine/"] # uncomment for local testing
 
     possible_folders = [os.getenv('GITHUB_WORKSPACE'), 
-                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_mr/'), 
-                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'docs_refine/')] #for github actions
+                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'overview/meetings/webex_mapreduce/'), 
+                        os.path.join(os.getenv('GITHUB_WORKSPACE'), 'overview/meetings/webex_refine/')] #for github actions
 
     folder = None
     for pf in possible_folders:

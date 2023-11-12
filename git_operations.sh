@@ -4,7 +4,7 @@ echo "Starting git_operations.sh script"
 
 # Check if mandatory environment variables are set
 if [ -z "$OPENAI_API_KEY" ] || [ -z "$GH_TOKEN" ] || [ -z "$PUBLIC_KEY" ] || [ -z "$SECRET_KEY" ]; then
-  echo "Required environment variables are missing."
+  echo "Required environment variables are missing. Set OPENAI_API_KEY, GH_TOKEN, PUBLIC_KEY, and SECRET_KEY as secrets in your GitHub repository settings."
   exit 1
 fi
 
@@ -26,16 +26,16 @@ echo "Current directory: $(pwd)"
 ls -alh
 
 # sanity checks
-echo "Contents of docs_mr/ directory:" 
-ls -alh docs_mr/
+echo "Contents of overview/meetings/webex_mapreduce/ directory:" 
+ls -alh overview/meetings/webex_mapreduce/
 echo "The current branch is:"
 git branch
 echo "GITHUB_REF: ${GITHUB_REF}"
 echo "GITHUB_SHA: ${GITHUB_SHA}"
 
-# Read file paths of changed VTT files in docs_mr/:
+# Read file paths of changed VTT files in overview/meetings/webex_mapreduce/:
 echo "Checking for changed VTT files with SHA..."
-files=$(git diff --name-only "${GITHUB_SHA}^" "${GITHUB_SHA}" | grep 'docs_mr/.*\.vtt' | tr '\n' ':')
+files=$(git diff --name-only "${GITHUB_SHA}^" "${GITHUB_SHA}" | grep 'overview/meetings/webex_mapreduce/.*\.vtt' | tr '\n' ':')
 echo "Changed VTT files: $files"
 
 # Convert the colon-separated string to an array
@@ -56,15 +56,15 @@ for file in "${file_array[@]}"; do
 
     echo "Processing $sanitized_file"
     # Ensure to quote the path to handle spaces
-    python minervasmemo.py -i "/github/workspace/docs_mr/$sanitized_file.vtt" --mode summarize >> minervasmemo.log 2>&1
+    python minervasmemo.py -i "/github/workspace/overview/meetings/webex_mapreduce/$sanitized_file.vtt" --mode summarize >> minervasmemo.log 2>&1
 done
 
 
 cat minervasmemo.log # Print the log file of minervasmemo.py for debugging
 
-# Move the cleaned up transcript and summary to docs_mr/ in the GitHub workspace
+# Move the cleaned up transcript and summary to overview/meetings/webex_mapreduce/ in the GitHub workspace
 # can be removed
-# mv *summary*.md /github/workspace/docs_mr/ 
+# mv *summary*.md /github/workspace/overview/meetings/webex_mapreduce/ 
 # mv *token_info.txt /github/workspace/ 
 
 # Change directory to the GitHub workspace
@@ -86,14 +86,14 @@ FEATURE_BRANCH="add-summary-${sanitized_files[0]}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Read token and cost information
-token_info=$(cat docs_mr/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+token_info=$(cat overview/meetings/webex_mapreduce/*_token_info.txt | sed ':a;N;$!ba;s/\n/\\n/g')
 info="$token_info"
 echo "Token and Cost Info:"
 echo -e "$info"
 
 
 # Commit changes and push to the new branch
-git add docs_mr/*.md
+git add overview/meetings/webex_mapreduce/*.md
 git status
 if git commit -m "Add cleaned up transcript and summary as markdown"; then
   git push origin "$FEATURE_BRANCH"

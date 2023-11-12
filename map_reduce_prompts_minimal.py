@@ -14,9 +14,9 @@ map_prompt_template = PromptTemplate (
 )
 
 # Reduce
-reduce_template = """You are an excellent executive assistant. The following is one of a set of excerpts from a meeting transcripts of a recent hybrid meeting: \n
+reduce_template = """You are an excellent executive assistant. The following is a set of excerpts from meeting transcripts of a recent hybrid meeting: \n
 Excerpt:`{text}`\n
-Take these and in a stepwise manner condense the transcript text in one coherent document but WITHOUT loosing ANY meaning allowing for information-loss-free reconstruction of the original transcript. \n
+Take these and in a stepwise manner condense the transcripts in one coherent document but WITHOUT loosing meaning. \n
 Thus step by step distill a comprehensive and cohesive summary of the meeting. \n
 Meeting Summary:"""
 # reduce_prompt = PromptTemplate.from_template(reduce_template)
@@ -50,18 +50,31 @@ combine_prompt_template2 = PromptTemplate(
 )
 
 bullet_prompt = ChatPromptTemplate.from_template(
-    """You are an excellent executive assistant.\n
-    You are given an machine-generated transcript of a hybrid video conference.
-    Your task is to create a well structured concise summary in Markdown format.\n
-    The transcription may contain errors due to autmoatic voice recognition, please ignore those.\n
-    Prioritize clarity and accuracy and highlight decisions, action items and dates.\n
-    Summary: {summary}"""
+    """
+    You are an excellent executive assistance. You are given a summary of a hybrid video conference:\n
+    Create a well structured concise summary from this in Markdown format.\n
+    Key Aspects to focus on in your summary are:\n
+    Clarity and Accuracy: Ensure the summary is clear and accurate, accounting for potential transcription errors.\n
+    Highlight Key Elements: Emphasize decisions, action items, and dates.\n
+    Organize Efficiently: Use structured sections in the summary.\n
+    Include one section containing all agreed upon decisions and action items.\n
+    Markdown Formatting: Present the summary in Markdown format for readability and reference.\n
+    Summary: {summary}\n
+    SUMMARY IN MARKDOWN:
+    """
 )
 
 all_in_one_prompt = ChatPromptTemplate.from_template(
-    """You are an excellent executive assistant.\n
-    You are given an machine-generated transcript of a hybrid video conference.
-    Your task is to create a well structured concise summary in Markdown format.\n
-    The transcription may contain errors due to autmoatic voice recognition, please ignore those.\n
-    Prioritize clarity and accuracy and highlight decisions, action items and dates.\n
-    Transcript: {docs}\n""")
+    """
+    You are an excellent executive assistance. You are given an machine-generated transcript of a hybrid video conference:\n
+    Create a well structured concise summary of this transcript in Markdown format.\n
+    Key Aspects to focus on in your summary are:\n
+    Clarity and Accuracy: Ensure the summary is clear and accurate, accounting for potential transcription errors.\n
+    Highlight Key Elements: Emphasize decisions, action items, and dates.\n
+    Organize Efficiently: Use structured sections in the summary.\n 
+    Include one section containing all agreed upon decisions and action items.\n
+    Markdown Formatting: Present the summary in Markdown format for readability and reference.\n
+    Transcript: {docs}\n
+    SUMMARY IN MARKDOWN:
+    """
+)

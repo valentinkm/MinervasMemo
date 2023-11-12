@@ -24,7 +24,7 @@ def vtt_to_md(transcript, output_path, folder):
 
     for line in vtt_content:
         line = line.strip()
-        print(f"Processing line: {line}")
+        # print(f"Processing line: {line}")
         # Skip "WEBVTT" and empty lines
         if not line or line == "WEBVTT":
             continue

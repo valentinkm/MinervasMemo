@@ -57,7 +57,7 @@ bullet_prompt = ChatPromptTemplate.from_template(
     - Clarity and Accuracy: Ensure the summary is clear and accurate, accounting for potential transcription errors.\n
     - Highlight Key Points by emphasizing agreed upon decisions, action items, and dates.\n
     - Organize Efficiently: Use structured sections in the summary.\n
-    - Include one section containing all agreed upon decisions and action items.\n
+    - Include one section called "# Action Items" containing all agreed upon decisions and action items with dates and responsible persons if applicable.\n
     - Keep the summary concise and to the point for efficient future reference of key elements.\n
     - Format: Use Markdown formatting for crafting a well structured and readable summary.\n
     Summary: {summary}\n
@@ -74,7 +74,7 @@ all_in_one_prompt = ChatPromptTemplate.from_template(
     - Clarity and Accuracy: Ensure the summary is clear and accurate, accounting for potential transcription errors.\n
     - Highlight Key Points by emphasizing agreed upon decisions, action items, and dates.\n
     - Organize Efficiently: Use structured sections in the summary.\n
-    - Include one section containing all agreed upon decisions and action items.\n
+    - Include one section called "# Action Items" containing all agreed upon decisions and action items with dates and responsible persons if applicable.\n
     - Keep the summary concise and to the point for efficient future reference of key elements.\n
     - Format: Use Markdown formatting for crafting a well structured and readable summary.\n
     Transcript: {docs}\n

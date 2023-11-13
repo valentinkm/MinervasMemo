@@ -94,10 +94,6 @@ info="$token_info"
 echo "Token and Cost Info:"
 echo "$info"
 
-# Read model information
-model_info=$(cat overview/meetings/summaries/model_name.txt)
-echo "Model Info:"
-echo "$model_info"
 
 # Github Actor
 echo "GitHub Actor: $GITHUB_ACTOR"
@@ -113,7 +109,7 @@ if git commit -m "Add cleaned up transcript and summary as markdown"; then
   gh pr create --base main --head "$FEATURE_BRANCH" \
     --title "Add cleaned up transcript and summary of ${sanitized_files[0]}" \
     # include model name from env variables in body:
-    --body "$model_info" \
+    --body "" \
     --reviewer "$GITHUB_ACTOR"
 else
   echo "No changes to commit"

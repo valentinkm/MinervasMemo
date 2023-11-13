@@ -94,6 +94,14 @@ info="$token_info"
 echo "Token and Cost Info:"
 echo "$info"
 
+# Read model information
+model_info=$(cat overview/meetings/summaries/*_model_name.txt)
+echo "Model Info:"
+echo "$model_info"
+
+# Github Actor
+echo "GitHub Actor: $GITHUB_ACTOR"
+
 # Commit changes and push to the new branch
 git add overview/meetings/summaries/*.md
 git add overview/meetings/transcripts/*.md
@@ -104,7 +112,8 @@ if git commit -m "Add cleaned up transcript and summary as markdown"; then
   # Create Pull Request with the GitHub CLI
   gh pr create --base main --head "$FEATURE_BRANCH" \
     --title "Add cleaned up transcript and summary of ${sanitized_files[0]}" \
-    --body "$info" \
+    # include model name from env variables in body:
+    --body "$model_info" \
     --reviewer "$GITHUB_ACTOR"
 else
   echo "No changes to commit"

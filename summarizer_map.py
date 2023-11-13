@@ -86,8 +86,6 @@ def generate_summary_map(docs, token_count_transcript):
 
     if token_count_transcript < 100000:
         print("Token count below context window. Running single-prompt summary chain...\nModel: ", os.getenv('OPENAI_GPT_ALL_IN_ONE'))
-        with open('overview/meetings/summaries/model_name.txt', 'w') as f:
-            f.write("Token count below context window. Running single-prompt summary chain...\nModel: " + os.getenv('OPENAI_GPT_ALL_IN_ONE'))
 
         with get_openai_callback() as cb:
             result = all_in_one_chain(docs, callbacks=[handler])
@@ -105,10 +103,6 @@ def generate_summary_map(docs, token_count_transcript):
     else:
         # Run first summary chain
         print("Token count above context window. Running MapReduce chain...\nModel: ", os.getenv('OPENAI_GPT_MAPREDUCE'))
-        with open('overview/meetings/summaries/model_name.txt', 'w') as f:
-            f.write("Token count below context window. Running single-prompt summary chain...\n MapReduce Model: " 
-                    + os.getenv('OPENAI_GPT_MAPREDUCE' "\nFinal Model: " 
-                    + os.getenv('OPENAI_GPT_FINAL')))
 
         with get_openai_callback() as cb:
             first_summary = summary_chain1.run(docs, callbacks=[handler])

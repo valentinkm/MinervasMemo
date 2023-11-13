@@ -85,7 +85,7 @@ git fetch origin main:temp-main
 git checkout temp-main
 
 # Create and checkout a new branch for the Pull Request named after the first file
-FEATURE_BRANCH="summarized-${sanitized_files[0]}"
+FEATURE_BRANCH="summarized-${sanitized_files[0]}-${GITHUB_SHA}"
 git checkout -b "$FEATURE_BRANCH"
 
 # Read token and cost information

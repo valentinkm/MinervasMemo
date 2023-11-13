@@ -108,8 +108,8 @@ if git commit -m "Add cleaned up transcript and summary as markdown"; then
   # Create Pull Request with the GitHub CLI
   gh pr create --base main --head "$FEATURE_BRANCH" \
     --title "Add cleaned up transcript and summary of ${sanitized_files[0]}" \
-    # include model name from env variables in body:
-    --body "" \
+    # fill in the body of the PR
+    --body "This PR was created automatically by a GitHub Action. A cleaned up transcript and summary of ${sanitized_files} were cleaned up and added to the repository." \
     --reviewer "$GITHUB_ACTOR"
 else
   echo "No changes to commit"

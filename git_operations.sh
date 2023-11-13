@@ -95,7 +95,7 @@ echo "Token and Cost Info:"
 echo "$info"
 
 # Read model information
-model_info=$(cat overview/meetings/summaries/*_model_name.txt)
+model_info=$(cat overview/meetings/summaries/model_name.txt)
 echo "Model Info:"
 echo "$model_info"
 

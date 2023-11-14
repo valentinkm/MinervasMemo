@@ -12,6 +12,6 @@ def count_transcript_tokens(raw_md):
     with open(raw_md, 'r', encoding='utf-8') as file:
         content = file.read()
 
-    token_count_transcript = len(encoding_gpt4.encode(content))
+    token_count_transcript = len(encoding_gpt3.encode(content))
     return token_count_transcript
 

@@ -108,7 +108,7 @@ if git commit -m "Add cleaned up transcript and summary as markdown"; then
   # Create Pull Request with the GitHub CLI
   gh pr create --base main --head "$FEATURE_BRANCH" \
     --title "Add cleaned up transcript and summary of ${sanitized_files[0]}" \
-    --body "This PR was created automatically by MinervasMemo GitHub Action. A summary and a cleaned up transcript Markdown file of ${sanitized_files[0]} were added to the repository. \n\n $info" \
+    --body "$info. This PR was created automatically by MinervasMemo GitHub Action. A summary and a cleaned up transcript Markdown file of ${sanitized_files[0]} were added to the repository." \
     --reviewer "$GITHUB_ACTOR"
 else
   echo "No changes to commit"

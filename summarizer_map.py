@@ -7,7 +7,7 @@ from langchain.chains.llm import LLMChain
 from langfuse.callback import CallbackHandler
 from langchain.callbacks import get_openai_callback
 from langchain.chains.llm import LLMChain
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import AzureChatOpenAI
 
 # Modules
 from map_reduce_prompts_minimal import map_prompt_template, combine_prompt_template, map_prompt_template2, combine_prompt_template2, bullet_prompt, all_in_one_prompt
@@ -40,15 +40,35 @@ def initialize_summarizer():
     PUBLIC_KEY = os.getenv('PUBLIC_KEY')
     SECRET_KEY = os.getenv('SECRET_KEY')
     
+
     handler = CallbackHandler(PUBLIC_KEY, SECRET_KEY)
     
     # get model name from environment variable:
     
-    llm = ChatOpenAI(temperature=0.7, model_name =mapreduce_model_name)
-    
-    llm_final = ChatOpenAI(temperature=0.7, model_name =final_model_name)
+    # llm = ChatOpenAI(temperature=0.7, model_name =mapreduce_model_name)
 
-    llm_all_in_one = ChatOpenAI(temperature=0.7, model_name =all_in_one_model_name)
+    llm = AzureChatOpenAI(request_timeout=30,
+                          model = "summarizer", 
+                          temperature=0.5, 
+                          deployment_name=mapreduce_model_name,
+                          openai_api_key=os.getenv("OPENAI_API_KEY"))
+    
+    # llm_final = ChatOpenAI(temperature=0.7, model_name =final_model_name)
+
+    llm_final = AzureChatOpenAI(request_timeout=30,
+                                model = "summarizer", 
+                                temperature=0.5, 
+                                deployment_name=mapreduce_model_name,
+                                openai_api_key=os.getenv("OPENAI_API_KEY"))
+    
+
+    # llm_all_in_one = ChatOpenAI(temperature=0.7, model_name =all_in_one_model_name)
+    
+    llm_all_in_one = AzureChatOpenAI(request_timeout=30,
+                                model = "summarizer", 
+                                temperature=0.5, 
+                                deployment_name=all_in_one_model_name,
+                                openai_api_key=os.getenv("OPENAI_API_KEY"))
 
     
     summary_chain1 = load_summarize_chain (

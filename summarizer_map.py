@@ -104,7 +104,7 @@ def generate_summary_map(docs, token_count_transcript):
     token_info_final = {'Total Tokens': 0, 'Prompt Tokens': 0, 'Completion Tokens': 0, 'Total Cost (USD)': 0.0}
     aggregated_token_info = {'Total Tokens': 0, 'Total Cost (USD)': 0.0} 
 
-    if token_count_transcript < 4000:
+    if token_count_transcript < 3000:
         print("Token count below context window. Running single-prompt summary chain...\nModel: ", os.getenv('OPENAI_GPT_ALL_IN_ONE'))
 
         with get_openai_callback() as cb:

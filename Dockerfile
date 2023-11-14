@@ -39,9 +39,9 @@ RUN chmod +x git_operations.sh
 EXPOSE 80
 
 # Define environment variable
-# ENV OPENAI_API_BASE=https://zitopenai.openai.azure.com/
-# ENV OPENAI_API_TYPE=azure
-# ENV OPENAI_API_VERSION=2023-03-15-preview
+ENV OPENAI_API_BASE=https://zitopenai.openai.azure.com/
+ENV OPENAI_API_TYPE=azure
+ENV OPENAI_API_VERSION=2023-03-15-preview
 
 # --- Models ---
 ENV OPENAI_GPT_MAPREDUCE=gpt-3.5-turbo

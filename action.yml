@@ -19,7 +19,6 @@ inputs:
 outputs:
   summary-md-path:
     description: 'The file path for the summarized markdown file'
-    # You might want to output this after the script runs, using `echo "::set-output name=summary-md-path::$PATH"`
 
 runs:
   using: 'docker'
